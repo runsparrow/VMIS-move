@@ -1,0 +1,9 @@
+
+  <view class="_4297b7d">
+      <view class="login _4297b7d">
+          <h1 class="_4297b7d">绑定账户</h1>
+          <view class="zhanghao _4297b7d">账号：<input class="zh _4297b7d" bindinput="getzhanghao"/></view>
+           <view class="zhanghao _4297b7d">密码：<input type="password" class="ma _4297b7d" bindinput="getmima"/></view>
+           <view class="zhanghao _4297b7d"><van-button class="bt _4297b7d"  bind:click="login">验证</van-button></view>
+      </view>
+  </view>

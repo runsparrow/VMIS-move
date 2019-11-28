@@ -1,64 +1,64 @@
 
-  <view class="_2d69130">
+  <view class="_622fad0">
    
-  <view class="_91f61f8 _2d69130">
-    <view class="calendar-wrapper _91f61f8">
-      <view class="calendar-content _91f61f8">
-        <view class="pick-view _91f61f8">
-          <view class="pick-img _91f61f8">
-            <view class="_91f61f8">
-              <image bindtap="$singleCalendar$toPreMonth" src="{{$singleCalendar$image.leftCan}}" class="_91f61f8"/>
+  <view class="_2e8a5d4 _622fad0">
+    <view class="calendar-wrapper _2e8a5d4">
+      <view class="calendar-content _2e8a5d4">
+        <view class="pick-view _2e8a5d4">
+          <view class="pick-img _2e8a5d4">
+            <view class="_2e8a5d4">
+              <image bindtap="$singleCalendar$toPreMonth" src="{{$singleCalendar$image.leftCan}}" class="_2e8a5d4"/>
             </view>
-            <view class="_91f61f8">
-              <image bindtap="$singleCalendar$toNextMonth" src="{{$singleCalendar$image.rightCan}}" class="_91f61f8"/>
+            <view class="_2e8a5d4">
+              <image bindtap="$singleCalendar$toNextMonth" src="{{$singleCalendar$image.rightCan}}" class="_2e8a5d4"/>
             </view>
           </view>
-          <view class="flex-center picker _91f61f8">
+          <view class="flex-center picker _2e8a5d4">
             {{$singleCalendar$viewTime.year}}年{{$singleCalendar$viewTime.month}}月
           </view>
         </view>
-        <view class="week flex-center _91f61f8">
-          <block  wx:for="{{$singleCalendar$weeksCh}}" wx:key="{{item}}" class="_91f61f8">
-            <view class="flex-center _91f61f8">{{item}}</view>
+        <view class="week flex-center _2e8a5d4">
+          <block  wx:for="{{$singleCalendar$weeksCh}}" wx:key="{{item}}" class="_2e8a5d4">
+            <view class="flex-center _2e8a5d4">{{item}}</view>
           </block>
         </view>
-        <view class="day clearfix _91f61f8">
-          <block  wx:for="{{$singleCalendar$viewDays}}" wx:key="{{item.key}}" class="_91f61f8">
-            <view bindtap="$singleCalendar$changeResultTime" data-index="{{index}}" data-item="{{item}}" class="flex-center {{(item.formatDay === $singleCalendar$current.formatDay)&&(item.month === $singleCalendar$viewTime.month && item.year === $singleCalendar$viewTime.year) ? 'restime' : ''}} _91f61f8">
+        <view class="day clearfix _2e8a5d4">
+          <block  wx:for="{{$singleCalendar$viewDays}}" wx:key="{{item.key}}" class="_2e8a5d4">
+            <view bindtap="$singleCalendar$changeResultTime" data-index="{{index}}" data-item="{{item}}" class="flex-center {{(item.formatDay === $singleCalendar$current.formatDay)&&(item.month === $singleCalendar$viewTime.month && item.year === $singleCalendar$viewTime.year) ? 'restime' : ''}} _2e8a5d4">
               <!-- 每月的天数 -->
-              <view class="day-item {{!(item.month === $singleCalendar$viewTime.month && item.year === $singleCalendar$viewTime.year)? 'opacity_text' : ''  }}{{($singleCalendar$initialDate > item.formatDay && item.month === $singleCalendar$viewTime.month) ? 'not-view-month' : ''}} _91f61f8">
+              <view class="day-item {{!(item.month === $singleCalendar$viewTime.month && item.year === $singleCalendar$viewTime.year)? 'opacity_text' : ''  }}{{($singleCalendar$initialDate > item.formatDay && item.month === $singleCalendar$viewTime.month) ? 'not-view-month' : ''}} _2e8a5d4">
            
-              <view class="redball _91f61f8" wx:if="{{item.isday}}"/> 
+              <view class="redball _2e8a5d4" wx:if="{{item.isday}}"/> 
               
                {{item.day}}
                 </view>
               <!-- 当天的值加重显示 -->
-              <view style="background-color: {{$singleCalendar$color}}" wx-if="{{(item.formatDay === $singleCalendar$current.formatDay)&&(item.month === $singleCalendar$viewTime.month && item.year === $singleCalendar$viewTime.year)}}" class="round _91f61f8"> </view>
+              <view style="background-color: {{$singleCalendar$color}}" wx-if="{{(item.formatDay === $singleCalendar$current.formatDay)&&(item.month === $singleCalendar$viewTime.month && item.year === $singleCalendar$viewTime.year)}}" class="round _2e8a5d4"> </view>
             </view>
           </block>
         </view>
       </view>
     </view>
   </view>
-   <view class="downlist _2d69130">
-    <view class="addbutton _2d69130">
-       <view class="_2d69130">
+   <view class="downlist _622fad0">
+    <view class="addbutton _622fad0">
+       <view class="_622fad0">
        当日日程：{{nowtime?nowtime:""}}
      </view>
-      <van-icon bindtap="newricheng" name="add" size="30px" color="#438df7" class="_2d69130"/>
+      <van-icon bindtap="newricheng" name="add" size="30px" color="#438df7" class="_622fad0"/>
     </view>
-    <view class="content _2d69130">
-     <van-cell-group class="_2d69130">
-            <van-cell wx-if="{{nowtimelist.length>0}}"  wx:for="{{nowtimelist}}" id="{{item.id}}" wx:key="index" title="{{item.name}}" is-link="is-link"  bind:click="viewricheng" class="_2d69130"/>
+    <view class="content _622fad0">
+     <van-cell-group class="_622fad0">
+            <van-cell wx-if="{{nowtimelist.length>0}}"  wx:for="{{nowtimelist}}" id="{{item.id}}" wx:key="index" title="{{item.name}}" is-link="is-link"  bind:click="viewricheng" class="_622fad0"/>
       </van-cell-group>
      </view>
     </view>
 
-    <van-popup show="{{ show }}" closeable="closeable" close-icon="close" position="bottom" custom-style="height: 100%"  bind:close="onClose" z-index="500" class="_2d69130">
-<view class="popcentext _2d69130">
-  <van-nav-bar title="日程信息" left-text="返回" left-arrow="left-arrow" bind:click-left="onClickLeft" class="_2d69130"/>
+    <van-popup show="{{ show }}" closeable="closeable" close-icon="close" position="bottom" custom-style="height: 100%"  bind:close="onClose" z-index="500" class="_622fad0">
+<view class="popcentext _622fad0">
+  <van-nav-bar title="日程信息" left-text="返回" left-arrow="left-arrow" bind:click-left="onClickLeft" class="_622fad0"/>
 
- <view wx:if="{{isview}}" class="_2d69130">
+ <view wx:if="{{isview}}" class="_622fad0">
    <van-cell-group>
   <van-cell title="日程名称：" value="{{$viewcalendar$calendarinfos.name}}"/>
   <van-cell title="预约场地名称：" value="{{$viewcalendar$calendarinfos.site.name}}"/>
@@ -70,9 +70,9 @@
   <van-cell title="对接人联系方式：" value="{{$viewcalendar$calendarinfos.dockingMobile}}"/>
 </van-cell-group>
  </view>
-<view  wx:else class="_2d69130"/>
+<view  wx:else class="_622fad0"/>
 
- <view wx:if="{{isedit}}" class="_2d69130">
+ <view wx:if="{{isedit}}" class="_622fad0">
    <van-cell-group>
        <van-field value="{{ $editcalendar$calendarinfo.name }}" label="日程名称：" placeholder="请输入日程名称" border="{{ $editcalendar$false }}" id="name"  bind:change="$editcalendar$onChange"/>
   <van-field value="{{ $editcalendar$calendarinfo.siteId }}" label="预约场地名称：" placeholder="请输入预约场地名称" border="{{ $editcalendar$false }}" id="siteId"  bind:change="$editcalendar$onChange" bind:focus="$editcalendar$onasfocus"/>
@@ -101,7 +101,7 @@
 </van-popup>
 
  </view>
-<view wx:else class="_2d69130"/>
+<view wx:else class="_622fad0"/>
 </view>
 </van-popup>
 

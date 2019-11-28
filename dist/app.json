@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/login",
+    "pages/register",
     "pages/calendar",
     "pages/newtask",
     "pages/tasklist",
@@ -35,5 +36,5 @@
       }
     ]
   },
-  "sitemapLocation": "sitemap84.json"
+  "sitemapLocation": "sitemap75.json"
 }

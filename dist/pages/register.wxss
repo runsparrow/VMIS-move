@@ -1,5 +1,5 @@
 
-.login._701959a {
+.login._4297b7d {
   margin: 30% 0 0 0;
   /* border: 1px solid red; */
   display: flex;
@@ -7,25 +7,25 @@
   align-content: center;
   text-align: center;
 }
-.zhanghao._701959a {
+.zhanghao._4297b7d {
   display: flex;
   justify-content: center;
   flex-direction: row;
   margin: 5% 0 0 0;
 }
-.zh._701959a {
+.zh._4297b7d {
   border: 1px solid #eeeeee;
   -webkit-box-shadow: 0 2px 8px #aaaaaa;
   box-shadow: 0 2px 8px #aaaaaa;
   width: 50%;
 }
-.ma._701959a {
+.ma._4297b7d {
   border: 1px solid #eeeeee;
   -webkit-box-shadow: 0 2px 8px #aaaaaa;
   box-shadow: 0 2px 8px #aaaaaa;
   width: 50%;
 }
-.bt._701959a {
+.bt._4297b7d {
   -webkit-box-shadow: 0 2px 8px #aaaaaa;
   box-shadow: 0 2px 8px #aaaaaa;
 }

@@ -14,14 +14,13 @@
      label="预约场地名称："
     placeholder="请输入预约场地名称"
     border="{{ false }}" 
-    @focus="onasfocus"
+    bind:focus="onasfocus"
   />
   <van-field
     value="{{ venuename}}"
      label="预约场馆名称："
     placeholder="请输入预约场馆名称"
     border="{{ false }}"
-    id="venueId"
     bind:focus ="onvenfocus"
   />
   <van-field
@@ -44,12 +43,11 @@
     bind:change="onChange"
   />
   <van-field
-    value="{{ calendarinfo.customerId }}"
+    value="{{ customername }}"
       label="客户："
     placeholder="请输入客户"
     border="{{ false }}"
-        id="customerId"
-    bind:change="onChange"
+    bind:focus="oncsfocus"
   />
    <van-field
     value="{{ calendarinfo.dockingName }}"
@@ -119,8 +117,27 @@
 </view>
 </van-popup>
 
+<van-popup
+   show="{{ showpcs }}"
+  closeable
+  position="bottom"
+  custom-style="height: 50%"
+  bind:close="onClose"
+  overlay="true"
+  z-index="610"
+>
+<view>
+<van-picker show-toolbar  columns="{{ customercolumns }}" bind:confirm="oncustomerChange" />
+</view>
+</van-popup>
+
  </view>
 </template>
+
+ </view>
+</template>
+
+
 
 <script>
 import wepy from 'wepy';
@@ -154,17 +171,20 @@ export default class newtask extends wepy.page {
     venuelist: [],
     sitecolumns: [],
     venuecolumns: [],
+    customercolumns: [],
     currentDate: '12:00',
     minHour: 10,
     maxHour: 20,
     showpop: false,
     showpk: false,
     showpkv: false,
+    showpcs: false,
     minDate: new Date().getTime(),
     maxDate: new Date(2999, 10, 1).getTime(),
     currentDate: new Date().getTime(),
     sitename: '',
-    venuename: ''
+    venuename: '',
+    customername: ''
   };
   onChange(event) {
     // event.detail 为当前输入的值
@@ -173,6 +193,7 @@ export default class newtask extends wepy.page {
   components = {};
   onLoad() {
     this.getsitelist();
+    this.getcustomerlist();
   }
   getsitelist() {
     wx.request({
@@ -218,12 +239,30 @@ export default class newtask extends wepy.page {
       }
     });
   }
+  getcustomerlist() {
+    wx.request({
+      url: `http://localhost:5000/ERP/CRM/Customer/Read/Rows`,
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+        //Authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6Iua9mOa0gee-pCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJFUlBBcGkuRW50aXRpZXMuQVZNLlVzZXIiLCJpcCI6IjEyNy4wLjAuMSIsIm5iZiI6MTU3Mzk3NDU1MCwiZXhwIjoxNTc0MDYwOTUwLCJpc3MiOiJvY2Vsb3QiLCJhdWQiOiJldmVyeW9uZSJ9.lwPyby8LJfPjH_XigknRGsN_tLFYt4-KEvUa6GA596o'
+      },
+      success: res => {
+        if (res && res) {
+          this.customerlist = res.data;
+          this.customercolumns = res.data.map(p => p.defaultName);
+        }
+      },
+      fail: err => {
+        console.log(err);
+      }
+    });
+  }
   methods = {
     aaa() {
       console.log(1), console.log('calendarinfo', this.calendarinfo);
     },
     onChange(e) {
-      console.log('e.target.id', e.target.id);
       switch (e.target.id) {
         case 'name':
           this.calendarinfo.name = e.detail;
@@ -233,9 +272,6 @@ export default class newtask extends wepy.page {
           break;
         case 'receptionId':
           this.calendarinfo.receptionId = e.detail;
-          break;
-        case 'customerId':
-          this.calendarinfo.customerId = e.detail;
           break;
         case 'dockingName':
           this.calendarinfo.dockingName = e.detail;
@@ -261,6 +297,13 @@ export default class newtask extends wepy.page {
       this.venuename = name;
       this.showpkv = false;
     },
+    oncustomerChange(e) {
+      let customerinfo = this.customerlist[e.detail.index];
+      this.calendarinfo.customerId = customerinfo.id;
+      let name = customerinfo.defaultName;
+      this.customername = name;
+      this.showpcs = false;
+    },
     onconfirmdpk(e) {
       this.calendarinfo.receptionDateTime = moment(e.detail).format(
         'YYYY-MM-DD HH:mm:ss'
@@ -273,6 +316,10 @@ export default class newtask extends wepy.page {
     onvenfocus() {
       this.showpkv = true;
     },
+    oncsfocus() {
+      console.log(1)
+      this.showpcs = true;
+    },
     opentime() {
       this.showpop = true;
     },
@@ -280,6 +327,7 @@ export default class newtask extends wepy.page {
       this.showpop = false;
       this.showpk = false;
       this.showpkv = false;
+      this.showpcs = false;
     }
   };
 }

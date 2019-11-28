@@ -2,71 +2,66 @@
 <template>
   <view>
       <view class="login">
-          <h1>后台管理系统</h1>
-          <view class="zhanghao">账号：<input class="zh" bindinput="getzhanghao" /></view>
-           <view class="zhanghao">密码：<input type="password" class="ma" bindinput="getmima"/></view>
-           <view class="zhanghao"><van-button class="bt" bind:click="login">点击登陆</van-button></view>
+          <h1>欢迎登陆后台管理系统</h1>
       </view>
   </view>
 </template>
 
 <script>
-import wepy from 'wepy';
-import { connect } from 'wepy-redux';
+import wepy from "wepy";
+import { connect } from "wepy-redux";
 
 @connect({})
 export default class Login extends wepy.page {
   config = {
     usingComponents: {
-      'van-button': '../../static/plugIn//button/index'
+      "van-button": "../../static/plugIn//button/index"
     }
   };
-  onload() {
-    ///ERP/Auth/GetToken
+  onLoad() {
+    this.loginsystem();
+  }
+  onShow() {
+     this.loginsystem();
+  }
+  loginsystem(){
+    wepy.login().then(res => {
+      const code = res.code;
+      wx.request({
+        url: `http://localhost:5000/ERP/Auth/WeChatVerify?code=${code}`,
+        method: "GET",
+        header: {
+          "content-type": "application/x-www-form-urlencoded"
+        },
+        success: response => {
+          console.log("response", response);
+          if (response && response.data) {
+            let data = response.data;
+            if (data.token) {
+
+              //存一下token  后续api都加上token，只做一下我的页面，美化界面
+
+              wepy.switchTab({
+                url: "calendar"
+              });
+            } else {
+              wepy.navigateTo({
+                url: "register?openid=" + data.weChatEntity.openId
+              });
+            }
+          }
+        },
+        fail: err => {
+          console.log(err);
+        }
+      });
+    });
   }
   components = {};
-  data = {
-    userName: '',
-    password: ''
-  };
+  data = {};
   computed = {};
 
-  methods = {
-    getzhanghao(e) {
-      let zhanghao = e.detail.value;
-      this.setData({ userName: zhanghao });
-    },
-    getmima(e) {
-      let mima = e.detail.value;
-      this.setData({ password: mima });
-    },
-    login() {
-      wepy.switchTab({
-        url: 'calendar'
-      })
-
-      //   let formData = new FormData();
-      //   formData.append('AccountName', this.userName);
-      //   formData.append('AccountPwd', this.password);
-
-      //   wx.request({
-      //     url: `http://localhost:5000/ERP/Auth/GetToken`,
-      //     method: 'POST',
-      //     body: formData,
-      //     hearders:{
-      //           Accept: 'application/json',
-      //     },
-      //     success: res => {
-      //       if (res) {
-      //        console.log("res",res)
-      //       }
-      //     },
-      //     fail: err => {
-      //       console.log(err);
-      //     }
-      //   });
-    }
-  };
+  methods = {};
 }
 </script>
 <style scoped>

@@ -28,7 +28,7 @@ const store = configStore();
 setStore(store);
 export default class extends wepy.app {
   config = {
-    pages: ['pages/login','pages/calendar','pages/newtask', 'pages/tasklist','pages/mine' ],
+    pages: ['pages/login','pages/register','pages/calendar','pages/newtask', 'pages/tasklist','pages/mine' ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',

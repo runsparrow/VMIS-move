@@ -1,9 +1,6 @@
 
-  <view class="_6fc9b3a">
-      <view class="login _6fc9b3a">
-          <h1 class="_6fc9b3a">后台管理系统</h1>
-          <view class="zhanghao _6fc9b3a">账号：<input class="zh _6fc9b3a" bindinput="getzhanghao"/></view>
-           <view class="zhanghao _6fc9b3a">密码：<input type="password" class="ma _6fc9b3a" bindinput="getmima"/></view>
-           <view class="zhanghao _6fc9b3a"><van-button class="bt _6fc9b3a"  bind:click="login">点击登陆</van-button></view>
+  <view class="_701959a">
+      <view class="login _701959a">
+          <h1 class="_701959a">欢迎登陆后台管理系统</h1>
       </view>
   </view>
