@@ -1,0 +1,31 @@
+
+.login._6fc9b3a {
+  margin: 30% 0 0 0;
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  text-align: center;
+}
+.zhanghao._6fc9b3a {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin: 5% 0 0 0;
+}
+.zh._6fc9b3a {
+  border: 1px solid #eeeeee;
+  -webkit-box-shadow: 0 2px 8px #aaaaaa;
+  box-shadow: 0 2px 8px #aaaaaa;
+  width: 50%;
+}
+.ma._6fc9b3a {
+  border: 1px solid #eeeeee;
+  -webkit-box-shadow: 0 2px 8px #aaaaaa;
+  box-shadow: 0 2px 8px #aaaaaa;
+  width: 50%;
+}
+.bt._6fc9b3a {
+  -webkit-box-shadow: 0 2px 8px #aaaaaa;
+  box-shadow: 0 2px 8px #aaaaaa;
+}

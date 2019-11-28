@@ -1,0 +1,95 @@
+<template>
+ <view>
+
+<!--                控件                  -->
+ <van-popup
+   show="{{ showpop }}"
+  closeable
+  position="bottom"
+  custom-style="height: 50%"
+  bind:close="onClose"
+  z-index="610"
+>
+  <van-datetime-picker
+  type="time"
+  value="{{ currentDate }}"
+  min-hour="{{ minHour }}"
+  max-hour="{{ maxHour }}"
+  bind:input="onInput"
+/>
+</van-popup>
+
+<!-- <van-popup
+   show="{{ showpk }}"
+  closeable
+  position="bottom"
+  custom-style="height: 50%"
+  bind:close="onClose"
+  overlay="true"
+  z-index="610"
+>
+<view>
+<van-picker columns="{{ columns }}" bind:change="onChange" />
+</view>
+</van-popup> -->
+
+ </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import Calendar from 'wepy-com-calendar';
+import { connect } from 'wepy-redux';
+import moment from 'moment';
+import { stringify } from 'qs';
+
+@connect({})
+export default class editcalendar extends wepy.page {
+  config = {
+    usingComponents: {
+      'van-icon': '../../static/plugIn/icon/index',
+      'van-cell': '../../static/plugIn/cell/index',
+      'van-cell-group': '../../static/plugIn/cell-group/index',
+      'van-field': '../../static/plugIn/field/index',
+      'van-button': '../../static/plugIn/button/index',
+      'van-popup': '../../static/plugIn/popup/index',
+      'van-action-sheet': '../../static/plugIn/action-sheet/index',
+      'van-datetime-picker': '../../static/plugIn/datetime-picker/index',
+      'van-picker': '../../static/plugIn/picker/index'
+    }
+  };
+  props = {showpop};
+  data = {
+    calendarinfo: {},
+    username: '',
+    password: '',
+    asshow: false,
+    columns: [],
+    currentDate: '12:00',
+    minHour: 10,
+    maxHour: 20,
+    showpop: false,
+    showpk: false
+  };
+  onChange(event) {
+    // event.detail 为当前输入的值
+    console.log(event.detail);
+  }
+  components = {};
+  onLoad() {
+    this.getsitelist();
+    this.currentDate = new Date().getTime();
+  }
+  methods = {
+    onClose() {
+      this.showpop = false;
+      this.showpk = false;
+    },
+    onInput(event) {
+      this.setData({
+        currentDate: event.detail
+      });
+    }
+  };
+}
+</script>

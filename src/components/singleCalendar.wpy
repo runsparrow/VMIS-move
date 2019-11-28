@@ -1,0 +1,369 @@
+<style lang="less" scoped>
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30rpx;
+}
+.clearfix:after {
+  content: '';
+  height: 0;
+  line-height: 0;
+  display: block;
+  visibility: hidden;
+  clear: both;
+}
+.calendar-wrapper {
+  width: 100%;
+  border-radius: 8rpx;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 101;
+  background-color: white;
+}
+.date_title {
+  width: 100%;
+  text-align: center;
+  padding-top: 40rpx;
+  font-size: 34rpx;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+}
+.pick-view {
+  width: 100%;
+  height: 100rpx;
+  position: relative;
+  .pick-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    > view {
+      width: 60rpx;
+      height: 100%;
+      position: relative;
+      > image {
+        width: 30rpx;
+        height: 30rpx;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}
+.picker {
+  // width: 130rpx;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.calendar-content {
+  width: 100%;
+  background-color: white;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  .week {
+    margin-bottom: 40rpx;
+    > view {
+      flex: 1;
+      color: gray;
+    }
+  }
+  .day {
+    width: 100%;
+    > view {
+      position: relative;
+      float: left;
+      width: calc(100% / 7);
+      height: 60rpx;
+      padding: 20rpx;
+      box-sizing: border-box;
+      margin-bottom: 20rpx;
+    }
+    .day-item {
+      z-index: 200;
+    }
+    .not-view-month {
+      color: lightgray; // display: none;
+    }
+    .round {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: black;
+      width: 72rpx;
+      height: 72rpx;
+      border-radius: 50%;
+      z-index: 102;
+    }
+    .restime {
+      color: white;
+    }
+  }
+}
+.opacity_text {
+  display: none;
+}
+.redball {
+  z-index: 200;
+  background-color: red;
+  top: 0px;
+  right: 0px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+</style>
+
+<template>
+  <view>
+    <view class="calendar-wrapper">
+      <view class="calendar-content">
+        <view class="pick-view">
+          <view class="pick-img">
+            <view>
+              <image @tap="toPreMonth" src="{{image.leftCan}}"/>
+            </view>
+            <view>
+              <image @tap="toNextMonth" src="{{image.rightCan}}"/>
+            </view>
+          </view>
+          <view class="flex-center picker">
+            {{viewTime.year}}年{{viewTime.month}}月
+          </view>
+        </view>
+        <view class="week flex-center">
+          <block wx:for="{{weeksCh}}" wx:key="{{item}}">
+            <view class="flex-center">{{item}}</view>
+          </block>
+        </view>
+        <view class="day clearfix">
+          <block wx:for="{{viewDays}}" wx:key="{{item.key}}">
+            <view @tap="changeResultTime" data-index="{{index}}" data-item="{{item}}" class="flex-center {{(item.formatDay === current.formatDay)&&(item.month === viewTime.month && item.year === viewTime.year) ? 'restime' : ''}}">
+              <!-- 每月的天数 -->
+              <view class="day-item {{!(item.month === viewTime.month && item.year === viewTime.year)? 'opacity_text' : ''  }}{{(initialDate > item.formatDay && item.month === viewTime.month) ? 'not-view-month' : ''}}">
+           
+              <view class="redball" wx:if="{{item.isday}}" /> 
+              
+               {{item.day}}
+                </view>
+              <!-- 当天的值加重显示 -->
+              <view style="background-color: {{color}}" wx-if="{{(item.formatDay === current.formatDay)&&(item.month === viewTime.month && item.year === viewTime.year)}}" class="round"> </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import moment from 'moment';
+export default class Calendar extends wepy.component {
+  props = {
+    list: [],
+    color: {
+      type: String,
+      default: 'black'
+    }
+  };
+  data = {
+    datetimelist: [],
+    weeksCh: ['一', '二', '三', '四', '五', '六', '日'],
+    // 数组最后导出的日期
+    currentList: [],
+    // 当前日期
+    nowTime: {},
+    current: {
+      year: '',
+      month: '',
+      day: '',
+      formatDay: '',
+      weekCh: ''
+    },
+    value: new Date(),
+    viewTime: {
+      year: '',
+      month: '',
+      day: '',
+      formatDay: '',
+      weekCh: ''
+    },
+    // 当前视图的day数组
+    viewDays: [],
+    initial: 0,
+    image: {
+      leftCan: 'https://brcspace.oss-cn-shanghai.aliyuncs.com/left-can.png',
+      rightCan: 'https://brcspace.oss-cn-shanghai.aliyuncs.com/right-can.png'
+    },
+    // 月分初始化
+    dataInitial: 0,
+    // 初始化日期
+    initialDate: ''
+  };
+  onLoad(value) {
+    console.log('list2222', this.list);
+    this._init(value);
+    this.nowTime = this.current;
+    this.initialDate = this.current.formatDay;
+
+    this.$apply();
+  }
+  events = {
+    getlist(value) {
+      console.log('value', value);
+      this.datetimelist = value;
+      for (let i of this.viewDays) {
+        if(this.datetimelist.find(p=>moment(p.receptionDateTime).format("YYYY-MM-DD")==i.formatDay))
+        {
+          i.isday = true
+        }
+      }
+    }
+  };
+  methods = {
+    // 点击上个月
+    toPreMonth() {
+      this.viewDays = this._getData(
+        moment(this.viewTime.formatDay).subtract(1, 'days')
+      );
+      if (this.nowTime.month > 1) {
+        this.nowTime.month--;
+        //console.log('this.nowTime.month', this.nowTime.month);
+        this.$emit('handleprevmonth',new Date(`${this.nowTime.year}-${this.nowTime.month}-1`));
+      } else {
+        this.nowTime.month = 12;
+        //console.log('this.nowTime.month', this.nowTime.month);
+        this.$emit('handleprevmonth', new Date(`${this.nowTime.year}-${this.nowTime.month}-1`));
+      }
+      this.$apply();
+    },
+    // 点击下个月
+    toNextMonth() {
+      this.viewDays = this._getData(
+        moment(this.viewTime.formatDay)
+          .endOf('month')
+          .add(1, 'days')
+      );
+      if (this.nowTime.month < 12) {
+        this.nowTime.month++;
+        //console.log('this.nowTime.month', this.nowTime.month);
+        this.$emit('handlenextmonth', new Date(`${this.nowTime.year}-${this.nowTime.month}-1`));
+      } else {
+        this.nowTime.month = 1;
+        //console.log('this.nowTime.month', this.nowTime.month);
+        this.$emit('handlenextmonth',new Date(`${this.nowTime.year}-${this.nowTime.month}-1`));
+      }
+
+      this.$apply();
+    },
+    // 改变最后导出的时间
+    changeResultTime(e) {
+      let item = e.currentTarget.dataset.item;
+      this.current = item;
+      this.$emit('hanleConfirm', item);
+    }
+  };
+  watch = {
+    value(newValue, oldValue) {
+      this._init(newValue);
+    }
+  };
+  /**
+   * _getData
+   * 返回当前视图日期数组
+   * @param time
+   * @return [{day:31,month:3,year:2018},{day:1,month:4,year:2018},...]
+   */
+  _getData(time = moment()) {
+    this._setViewTime(time);
+    // 令时间变为当月1号的
+    const firstDay = time.startOf('month');
+    // 计算当月1号是星期几
+    const firstDayOfWeek = firstDay.format('E');
+    // 计算上个月多余时间
+    const last = this._calDate(
+      firstDay.subtract(firstDayOfWeek - 1, 'days'),
+      firstDayOfWeek - 1
+    );
+    // 计算本月时间
+    const current = this._calDate(firstDay, firstDay.daysInMonth());
+    // 令时间变为本月末
+    const endDay = time.subtract(1, 'days');
+    // 当月与末是星期几
+    const endDayOfWeek = endDay.format('E');
+    // 计算下个月多余时间
+    const next = this._calDate(endDay.add(1, 'days'), 7 - endDayOfWeek);
+    return [...last, ...current, ...next];
+  }
+  /**
+   * _setTime
+   * 设定导出的时间
+   * @param time moment对象
+   */
+  _setTime(time = moment()) {
+    this.current = this._dealMoment(time);
+  }
+  /**
+   * _setTime
+   * 设定当前日历的时间
+   * @param time moment对象
+   */
+  _setViewTime(time = moment()) {
+    this.viewTime = this._dealMoment(time.startOf('month'));
+  }
+  /**
+   * _calDate
+   * 计算日期函数
+   * @param time moment对象
+   * @param length 返回数组的长度
+   * @return 返回日期数组
+   */
+  _calDate(time, length) {
+    let arr = [];
+    for (let i = 0; i < length; i++) {
+      arr.push(this._dealMoment(time));
+      time.add(1, 'days');
+    }
+    return arr;
+  }
+  /**
+   * _dealMoment
+   * 处理moment对象
+   * @param time moment对象
+   * @return 返回一个Object{year, month, day, formatDay}
+   */
+  _dealMoment(time) {
+    let { years, months, date } = time.toObject();
+    return {
+      year: years,
+      month: months + 1,
+      day: date,
+      weekCh: '周' + this.weeksCh[time.format('E') - 1],
+      formatDay: time.format('YYYY-MM-DD'),
+      formatDate: time.format('MM-DD')
+    };
+  }
+  /**
+   * _init
+   * 初始化
+   * @param value '2018-02-02' YYYY-MM-DD
+   */
+  _init(value) {
+    if (this.initial === 0) {
+      this.viewDays = this._getData(moment(value));
+        this.viewDays.map(p => p.isday = false);
+      console.log('this.viewDays', this.viewDays);
+      this._setTime(moment(value));
+    }
+    this.initial += 1;
+  }
+}
+</script>

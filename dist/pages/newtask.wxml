@@ -1,0 +1,37 @@
+
+ <view>
+   <van-cell-group>
+       <van-field value="{{ calendarinfo.name }}" label="日程名称：" placeholder="请输入日程名称" border="{{ false }}" id="name"  bind:change="onChange"/>
+  <van-field value="{{sitename}}" label="预约场地名称：" placeholder="请输入预约场地名称" border="{{ false }}" bindfocus="onasfocus"/>
+  <van-field value="{{ venuename}}" label="预约场馆名称：" placeholder="请输入预约场馆名称" border="{{ false }}" id="venueId"  bind:focus="onvenfocus"/>
+  <van-field value="{{ calendarinfo.receptionDateTime }}" label="接待时间：" placeholder="请输入接待时间" border="{{ false }}" id="receptionDateTime" disabled bind:change="onChange">
+    <van-button bindtap="opentime" slot="button" size="small" type="info">选择时间</van-button>
+    </van-field>
+  <van-field value="{{ calendarinfo.receptionId }}" label="接待人名称：" placeholder="请输入接待人名称" border="{{ false }}" id="receptionId" bind:change="onChange"/>
+  <van-field value="{{ calendarinfo.customerId }}" label="客户：" placeholder="请输入客户" border="{{ false }}" id="customerId" bind:change="onChange"/>
+   <van-field value="{{ calendarinfo.dockingName }}" label="对接人名称：" placeholder="请输入对接人名称" border="{{ false }}" id="dockingName" bind:change="onChange"/>
+  <van-field value="{{ calendarinfo.dockingMobile }}" label="对接人联系方式：" placeholder="请输入对接人联系方式" border="{{ false }}" id="dockingMobile" bind:change="onChange"/>
+</van-cell-group>
+<!-- <van-button type="default">默认按钮</van-button>
+<van-button type="info">信息按钮</van-button> -->
+<button bindtap="aaa">asdas</button>
+
+<!--                控件                  -->
+ <van-popup show="{{ showpop }}" closeable="closeable" position="bottom" custom-style="height: 50%" bind:close="onClose" z-index="610">
+<van-datetime-picker type="datetime" value="{{ currentDate }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" bind:confirm="onconfirmdpk"/>
+
+</van-popup>
+
+<van-popup show="{{ showpk }}" closeable="closeable" position="bottom" custom-style="height: 50%" bind:close="onClose" overlay="true" z-index="610">
+<view>
+<van-picker show-toolbar="show-toolbar" columns="{{ sitecolumns }}" bind:confirm="onsiteChange"/>
+</view>
+</van-popup>
+
+<van-popup show="{{ showpkv }}" closeable="closeable" position="bottom" custom-style="height: 50%" bind:close="onClose" overlay="true" z-index="610">
+<view>
+<van-picker show-toolbar="show-toolbar" columns="{{ venuecolumns }}" bind:confirm="onvenueChange"/>
+</view>
+</van-popup>
+
+ </view>

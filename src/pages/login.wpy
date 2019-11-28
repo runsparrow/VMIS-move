@@ -1,0 +1,104 @@
+
+<template>
+  <view>
+      <view class="login">
+          <h1>后台管理系统</h1>
+          <view class="zhanghao">账号：<input class="zh" bindinput="getzhanghao" /></view>
+           <view class="zhanghao">密码：<input type="password" class="ma" bindinput="getmima"/></view>
+           <view class="zhanghao"><van-button class="bt" bind:click="login">点击登陆</van-button></view>
+      </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import { connect } from 'wepy-redux';
+
+@connect({})
+export default class Login extends wepy.page {
+  config = {
+    usingComponents: {
+      'van-button': '../../static/plugIn//button/index'
+    }
+  };
+  onload() {
+    ///ERP/Auth/GetToken
+  }
+  components = {};
+  data = {
+    userName: '',
+    password: ''
+  };
+  computed = {};
+
+  methods = {
+    getzhanghao(e) {
+      let zhanghao = e.detail.value;
+      this.setData({ userName: zhanghao });
+    },
+    getmima(e) {
+      let mima = e.detail.value;
+      this.setData({ password: mima });
+    },
+    login() {
+      wepy.switchTab({
+        url: 'calendar'
+      })
+
+      //   let formData = new FormData();
+      //   formData.append('AccountName', this.userName);
+      //   formData.append('AccountPwd', this.password);
+
+      //   wx.request({
+      //     url: `http://localhost:5000/ERP/Auth/GetToken`,
+      //     method: 'POST',
+      //     body: formData,
+      //     hearders:{
+      //           Accept: 'application/json',
+      //     },
+      //     success: res => {
+      //       if (res) {
+      //        console.log("res",res)
+      //       }
+      //     },
+      //     fail: err => {
+      //       console.log(err);
+      //     }
+      //   });
+    }
+  };
+}
+</script>
+<style scoped>
+.login {
+  margin: 30% 0 0 0;
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  text-align: center;
+}
+.zhanghao {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  margin: 5% 0 0 0;
+}
+.zh {
+  border: 1px solid #eeeeee;
+  -webkit-box-shadow: 0 2px 8px #aaaaaa;
+  box-shadow: 0 2px 8px #aaaaaa;
+  width: 50%;
+}
+.ma {
+  border: 1px solid #eeeeee;
+  -webkit-box-shadow: 0 2px 8px #aaaaaa;
+  box-shadow: 0 2px 8px #aaaaaa;
+  width: 50%;
+}
+.bt {
+  -webkit-box-shadow: 0 2px 8px #aaaaaa;
+  box-shadow: 0 2px 8px #aaaaaa;
+}
+</style>
+

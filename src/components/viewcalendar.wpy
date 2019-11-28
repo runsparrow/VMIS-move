@@ -1,0 +1,56 @@
+
+<template>
+ <view>
+   <van-cell-group>
+  <van-cell title="日程名称：" value="{{calendarinfos.name}}" />
+  <van-cell title="预约场地名称：" value="{{calendarinfos.site.name}}" />
+  <van-cell title="预约场馆名称：" value="{{calendarinfos.venue.name}}" />
+  <van-cell title="接待时间：" value="{{calendarinfos.receptionDateTime}}" />
+  <van-cell title="接待人名称：" value="{{}}" />
+  <van-cell title="客户：" value="{{calendarinfos.customer.defaultName}}" />
+  <van-cell title="对接人名称：" value="{{calendarinfos.dockingName}}" />
+  <van-cell title="对接人联系方式：" value="{{calendarinfos.dockingMobile}}" />
+</van-cell-group>
+ </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import Calendar from 'wepy-com-calendar';
+import { connect } from 'wepy-redux';
+import moment from 'moment';
+import { stringify } from 'qs';
+
+@connect({})
+export default class viewcalendar extends wepy.page {
+  config = {
+    usingComponents: {
+      'van-icon': '../../static/plugIn/icon/index',
+      'van-popup': '../../static/plugIn/popup/index',
+      'van-cell': '../../static/plugIn/cell/index',
+      'van-cell-group': '../../static/plugIn/cell-group/index',
+     
+    }
+  };
+  props = {
+    calendarinfo:{}
+  };
+  data = {
+    calendarinfos:{}
+  };
+   events = {
+    getcalendarinfo(value) {
+      console.log("1",value)
+      this.calendarinfos = value
+    }
+    }
+  components = {
+   
+  };
+  onLoad() {
+   
+  }
+  methods = {
+  };
+}
+</script>

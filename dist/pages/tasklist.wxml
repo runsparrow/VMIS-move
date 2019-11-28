@@ -1,0 +1,25 @@
+
+ <view class="content">
+     <van-cell-group>
+            <van-cell wx-if="{{nowtimelist.length>0}}"  wx:for="{{nowtimelist}}" id="{{item.id}}" wx:key="index" title="{{item.name}}" is-link="is-link"  bind:click="viewricheng"/>
+      </van-cell-group>
+        <van-popup show="{{ show }}" closeable="closeable" close-icon="close" position="bottom" custom-style="height: 100%"  bind:close="onClose" z-index="500">
+<view class="popcentext">
+  <van-nav-bar title="日程信息" left-text="返回" left-arrow="left-arrow" bind:click-left="onClickLeft"/>
+
+ <view wx:if="{{isview}}">
+   <van-cell-group>
+  <van-cell title="日程名称：" value="{{$viewcalendar$calendarinfos.name}}"/>
+  <van-cell title="预约场地名称：" value="{{$viewcalendar$calendarinfos.site.name}}"/>
+  <van-cell title="预约场馆名称：" value="{{$viewcalendar$calendarinfos.venue.name}}"/>
+  <van-cell title="接待时间：" value="{{$viewcalendar$calendarinfos.receptionDateTime}}"/>
+  <van-cell title="接待人名称：" value="{{}}"/>
+  <van-cell title="客户：" value="{{$viewcalendar$calendarinfos.customer.defaultName}}"/>
+  <van-cell title="对接人名称：" value="{{$viewcalendar$calendarinfos.dockingName}}"/>
+  <van-cell title="对接人联系方式：" value="{{$viewcalendar$calendarinfos.dockingMobile}}"/>
+</van-cell-group>
+ </view>
+<view  wx:else/>
+</view>
+</van-popup>
+     </view>

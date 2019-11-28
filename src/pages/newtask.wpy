@@ -1,0 +1,286 @@
+<template>
+ <view>
+   <van-cell-group>
+       <van-field
+    value="{{ calendarinfo.name }}"
+    label="日程名称："
+    placeholder="请输入日程名称"
+    border="{{ false }}"
+    id="name"
+    bind:change="onChange"
+  />
+  <van-field
+    value="{{sitename}}"
+     label="预约场地名称："
+    placeholder="请输入预约场地名称"
+    border="{{ false }}" 
+    @focus="onasfocus"
+  />
+  <van-field
+    value="{{ venuename}}"
+     label="预约场馆名称："
+    placeholder="请输入预约场馆名称"
+    border="{{ false }}"
+    id="venueId"
+    bind:focus ="onvenfocus"
+  />
+  <van-field
+    value="{{ calendarinfo.receptionDateTime }}"
+     label="接待时间："
+    placeholder="请输入接待时间"
+    border="{{ false }}"
+    id="receptionDateTime"
+    disabled
+    bind:change="onChange"
+  >
+    <van-button bindtap="opentime" slot="button" size="small" type="info">选择时间</van-button>
+    </van-field>
+  <van-field
+    value="{{ calendarinfo.receptionId }}"
+      label="接待人名称："
+    placeholder="请输入接待人名称"
+    border="{{ false }}"
+        id="receptionId"
+    bind:change="onChange"
+  />
+  <van-field
+    value="{{ calendarinfo.customerId }}"
+      label="客户："
+    placeholder="请输入客户"
+    border="{{ false }}"
+        id="customerId"
+    bind:change="onChange"
+  />
+   <van-field
+    value="{{ calendarinfo.dockingName }}"
+      label="对接人名称："
+    placeholder="请输入对接人名称"
+    border="{{ false }}"
+        id="dockingName"
+    bind:change="onChange"
+  />
+  <van-field
+    value="{{ calendarinfo.dockingMobile }}"
+        label="对接人联系方式："
+    placeholder="请输入对接人联系方式"
+    border="{{ false }}"
+        id="dockingMobile"
+    bind:change="onChange"
+  />
+</van-cell-group>
+<!-- <van-button type="default">默认按钮</van-button>
+<van-button type="info">信息按钮</van-button> -->
+<button bindtap="aaa">asdas</button>
+
+<!--                控件                  -->
+ <van-popup
+   show="{{ showpop }}"
+  closeable
+  position="bottom"
+  custom-style="height: 50%"
+  bind:close="onClose"
+  z-index="610"
+>
+<van-datetime-picker
+  type="datetime"
+  value="{{ currentDate }}"
+  min-date="{{ minDate }}"
+  max-date="{{ maxDate }}"
+  bind:confirm="onconfirmdpk"
+/>
+
+</van-popup>
+
+<van-popup
+   show="{{ showpk }}"
+  closeable
+  position="bottom"
+  custom-style="height: 50%"
+  bind:close="onClose"
+  overlay="true"
+  z-index="610"
+>
+<view>
+<van-picker show-toolbar columns="{{ sitecolumns }}" bind:confirm="onsiteChange" />
+</view>
+</van-popup>
+
+<van-popup
+   show="{{ showpkv }}"
+  closeable
+  position="bottom"
+  custom-style="height: 50%"
+  bind:close="onClose"
+  overlay="true"
+  z-index="610"
+>
+<view>
+<van-picker show-toolbar  columns="{{ venuecolumns }}" bind:confirm="onvenueChange" />
+</view>
+</van-popup>
+
+ </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import Calendar from 'wepy-com-calendar';
+import { connect } from 'wepy-redux';
+import moment from 'moment';
+import { stringify } from 'qs';
+
+@connect({})
+export default class newtask extends wepy.page {
+  config = {
+    usingComponents: {
+      'van-icon': '../../static/plugIn/icon/index',
+      'van-cell': '../../static/plugIn/cell/index',
+      'van-cell-group': '../../static/plugIn/cell-group/index',
+      'van-field': '../../static/plugIn/field/index',
+      'van-button': '../../static/plugIn/button/index',
+      'van-popup': '../../static/plugIn/popup/index',
+      'van-action-sheet': '../../static/plugIn/action-sheet/index',
+      'van-datetime-picker': '../../static/plugIn/datetime-picker/index',
+      'van-picker': '../../static/plugIn/picker/index'
+    }
+  };
+  props = {};
+  data = {
+    calendarinfo: {},
+    username: '',
+    password: '',
+    asshow: false,
+    sitelist: [],
+    venuelist: [],
+    sitecolumns: [],
+    venuecolumns: [],
+    currentDate: '12:00',
+    minHour: 10,
+    maxHour: 20,
+    showpop: false,
+    showpk: false,
+    showpkv: false,
+    minDate: new Date().getTime(),
+    maxDate: new Date(2999, 10, 1).getTime(),
+    currentDate: new Date().getTime(),
+    sitename: '',
+    venuename: ''
+  };
+  onChange(event) {
+    // event.detail 为当前输入的值
+    console.log(event.detail);
+  }
+  components = {};
+  onLoad() {
+    this.getsitelist();
+  }
+  getsitelist() {
+    wx.request({
+      url: `http://localhost:5000/ERP/SRM/Site/Read/Rows`,
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+        //Authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6Iua9mOa0gee-pCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJFUlBBcGkuRW50aXRpZXMuQVZNLlVzZXIiLCJpcCI6IjEyNy4wLjAuMSIsIm5iZiI6MTU3Mzk3NDU1MCwiZXhwIjoxNTc0MDYwOTUwLCJpc3MiOiJvY2Vsb3QiLCJhdWQiOiJldmVyeW9uZSJ9.lwPyby8LJfPjH_XigknRGsN_tLFYt4-KEvUa6GA596o'
+      },
+      success: res => {
+        if (res && res) {
+          this.sitelist = res.data;
+          this.sitecolumns = res.data.map(p => p.name);
+        }
+      },
+      fail: err => {
+        console.log(err);
+      }
+    });
+  }
+  getvenuelist(id) {
+    const param = {
+      Function: {
+        Name: 'bysiteid',
+        Args: [id]
+      }
+    };
+    wx.request({
+      url: `http://localhost:5000/ERP/SRM/Venue/Read/Rows`,
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+        //Authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6Iua9mOa0gee-pCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJFUlBBcGkuRW50aXRpZXMuQVZNLlVzZXIiLCJpcCI6IjEyNy4wLjAuMSIsIm5iZiI6MTU3Mzk3NDU1MCwiZXhwIjoxNTc0MDYwOTUwLCJpc3MiOiJvY2Vsb3QiLCJhdWQiOiJldmVyeW9uZSJ9.lwPyby8LJfPjH_XigknRGsN_tLFYt4-KEvUa6GA596o'
+      },
+      success: res => {
+        if (res && res) {
+          this.venuelist = res.data;
+          this.venuecolumns = res.data.map(p => p.name);
+        }
+      },
+      fail: err => {
+        console.log(err);
+      }
+    });
+  }
+  methods = {
+    aaa() {
+      console.log(1), console.log('calendarinfo', this.calendarinfo);
+    },
+    onChange(e) {
+      console.log('e.target.id', e.target.id);
+      switch (e.target.id) {
+        case 'name':
+          this.calendarinfo.name = e.detail;
+          break;
+        case 'receptionDateTime':
+          this.calendarinfo.receptionDateTime = e.detail;
+          break;
+        case 'receptionId':
+          this.calendarinfo.receptionId = e.detail;
+          break;
+        case 'customerId':
+          this.calendarinfo.customerId = e.detail;
+          break;
+        case 'dockingName':
+          this.calendarinfo.dockingName = e.detail;
+          break;
+        case 'dockingMobile':
+          this.calendarinfo.dockingMobile = e.detail;
+          break;
+      }
+      console.log('this.calendarinfo', this.calendarinfo);
+    },
+    onsiteChange(e) {
+      let siteinfo = this.sitelist[e.detail.index];
+      this.calendarinfo.siteId = siteinfo.id;
+      let name = siteinfo.name;
+      this.sitename = name;
+      this.showpk = false;
+      this.getvenuelist(siteinfo.id);
+    },
+    onvenueChange(e) {
+      let venueinfo = this.venuelist[e.detail.index];
+      this.calendarinfo.venueId = venueinfo.id;
+      let name = venueinfo.name;
+      this.venuename = name;
+      this.showpkv = false;
+    },
+    onconfirmdpk(e) {
+      this.calendarinfo.receptionDateTime = moment(e.detail).format(
+        'YYYY-MM-DD HH:mm:ss'
+      );
+      this.showpop = false;
+    },
+    onasfocus() {
+      this.showpk = true;
+    },
+    onvenfocus() {
+      this.showpkv = true;
+    },
+    opentime() {
+      this.showpop = true;
+    },
+    onClose() {
+      this.showpop = false;
+      this.showpk = false;
+      this.showpkv = false;
+    }
+  };
+}
+</script>

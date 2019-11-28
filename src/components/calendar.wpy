@@ -1,0 +1,465 @@
+<style lang="less" scoped>
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30rpx;
+}
+.clearfix:after {
+  content: '';
+  height: 0;
+  line-height: 0;
+  display: block;
+  visibility: hidden;
+  clear: both;
+}
+.calendar-wrapper {
+  width: 100%;
+  border-radius: 8rpx;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 101;
+  background-color: white;
+}
+.pick-view {
+  width: 100%;
+  height: 100rpx;
+  position: relative;
+  .pick-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    > view {
+      width: 60rpx;
+      height: 100%;
+      position: relative;
+      > image {
+        width: 30rpx;
+        height: 30rpx;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}
+.picker {
+  // width: 130rpx;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.calendar-content {
+  width: 100%;
+  background-color: white;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  .week {
+    margin-bottom: 40rpx;
+    > view {
+      flex: 1;
+      color: gray;
+    }
+  }
+  .day {
+    width: 100%;
+    > view {
+      position: relative;
+      float: left;
+      width: calc(100% / 7);
+      height: 60rpx;
+      padding: 20rpx;
+      box-sizing: border-box;
+
+      margin-bottom: 20rpx;
+    }
+    .day-item {
+      z-index: 200;
+    }
+    .not-view-month {
+      color: lightgray;
+    }
+    .round {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: black;
+      width: 72rpx;
+      height: 72rpx;
+      border-radius: 50%;
+      z-index: 102;
+    }
+    .restime {
+      color: white;
+    }
+  }
+}
+// 人数
+.count_container {
+  width: 100%;
+  position: relative;
+  text-align: center;
+  padding: 20px 0 40px;
+  background:rgba(252,252,253,1);
+  border-bottom: 1px solid #e5e5e5;
+  .count_title {
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color:rgba(0,0,0,1);
+    font-size: 30rpx;
+    width: 100%;
+    margin-bottom: 30rpx;
+  }
+  .count_box {
+    width: 100%;
+    display: flex;
+    view {
+      width: 34%;
+      position: relative;
+      font-size: 40rpx;
+      font-family: PingFangSC-Regular;
+      font-weight: 400;
+      color:rgba(44,44,44,1);
+      image {
+        width: 60rpx;
+        height: 60rpx;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%)
+      }
+    }
+    .minus_btn image {
+      right: 0;
+    }
+    .plus_btn image {
+      left: 0;
+    }
+  }
+}
+.opacity_text {
+  display: none;
+}
+</style>
+<template>
+<view>
+  <view class="count_container">
+    <view class="count_title">数量</view>
+    <view class="count_box">
+      <view class="minus_btn">
+        <image @tap="countMinus" mode="aspectFill" src="{{people < 2 ? image.minusUnckeck : image.minusCheck}}"></image>
+      </view>
+      <view>{{people}}</view>
+      <view class="plus_btn">
+        <image @tap="countPlus" mode="aspectFill" src="{{image.plus}}"></image>
+      </view>
+    </view>
+  </view>
+  <view class="calendar-wrapper">
+    <view class="calendar-content">
+      <view class="pick-view">
+        <view class="pick-img">
+          <view>
+            <image @tap="toPreMonth" src="{{image.leftCan}}"></image>
+          </view>
+          <view>
+            <image @tap="toNextMonth" src="{{image.rightCan}}"></image>
+          </view>
+        </view>
+        <view class="flex-center picker">
+          {{viewTime.year}}年{{viewTime.month}}月
+        </view>
+      </view>
+      <view class="week flex-center">
+        <block wx:for="{{weeksCh}}" wx:key="{{item}}">
+          <view class="flex-center">{{item}}</view>
+        </block>
+      </view>
+        <view class="day clearfix">
+          <block wx:for="{{viewDays}}" wx:key="{{item.key}}">
+            <view @tap="changeResultTime" data-index="{{index}}" data-item="{{item}}" class="flex-center {{item.check ? 'restime' : ''}}">
+              <view  class="day-item {{!(item.month === viewTime.month && item.year === viewTime.year) ? 'opacity_text' : ''  }}{{(initialDate > item.formatDay && item.month === viewTime.month || choosableDate < item.formatDay && item.month === viewTime.month) ? 'not-view-month' : ''}}">{{item.day}}</view>
+              <view style="background-color: {{color}}" wx:if="{{item.check}}" class="round {{!(item.month === viewTime.month && item.year === viewTime.year)? 'opacity_text' : ''  }}"> </view>
+            </view>
+          </block>
+        </view>
+    </view>
+  </view>
+    <button type="primary" class="payment_btn" style="background:#278BFF;border-radius:0;padding: 10rpx 0;" @tap="confirm">确认预订</button>
+</view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import moment from 'moment'
+export default class Calendar extends wepy.component {
+  props = {
+    color: {
+      type: String,
+      default: 'black'
+    },
+    peopleCount: {
+      type: Number,
+      default: 1,
+      twoWay: true
+    },
+    dateList: {
+      type: Array,
+      default: [],
+      twoWay: true
+    }
+  }
+  data = {
+    weeksCh: ['一', '二', '三', '四', '五', '六', '日'],
+    // 数组最后导出的日期
+    currentList: [],
+    // 当前日期
+    nowTime: {},
+    current: {
+      year: '',
+      month: '',
+      day: '',
+      formatDay: '',
+      weekCh: ''
+    },
+    viewTime: {
+      year: '',
+      month: '',
+      day: '',
+      formatDay: '',
+      weekCh: ''
+    },
+    // 当前视图的day数组
+    viewDays: [],
+    initial: 0,
+    image: {
+      minusCheck: 'https://brcspace.oss-cn-shanghai.aliyuncs.com/minus1.png',
+      minusUnckeck: 'https://brcspace.oss-cn-shanghai.aliyuncs.com/minus.png',
+      plus: 'https://brcspace.oss-cn-shanghai.aliyuncs.com/plus.png',
+      leftCan: 'https://brcspace.oss-cn-shanghai.aliyuncs.com/left-can.png',
+      rightCan: 'https://brcspace.oss-cn-shanghai.aliyuncs.com/right-can.png'
+    },
+    // 月分初始化
+    dataInitial: 0,
+    // 初始化日期
+    initialDate: '',
+    // 可选日期节点
+    choosableDate: '',
+    // 剩余库存
+    goodsStock: 0,
+    selectDate: '',
+    people: 1,
+    selectList: []
+  }
+  onLoad(value) {
+    this._init()
+    this.goodsStock = this.$parent.$parent.globalData.freeInfo.goodsStock
+    this.nowTime = this.current
+    this.people = this.peopleCount
+    this.selectList = this.dateList
+    this.$apply()
+  }
+  methods = {
+    // 点击上个月
+    toPreMonth () {
+      if (this.dataInitial === 1) {
+        this.viewDays = this._getData(moment(this.viewTime.formatDay).subtract(1, 'days'))
+        this.nowTime.month --
+        this._checkView()
+        this.dataInitial --
+        this.$apply()
+      }
+    },
+    // 点击下个月
+    toNextMonth () {
+      if (this.dataInitial === 0) {
+        this.viewDays = this._getData(moment(this.viewTime.formatDay).endOf('month').add(1, 'days'))
+        this.nowTime.month ++
+        this._checkView()
+        this.dataInitial ++
+        this.$apply()
+      }
+    },
+    // 选择时间
+    changeResultTime (e) {
+      this.selectList = []
+      let item = e.currentTarget.dataset.item
+      let index = e.currentTarget.dataset.index
+      if (item.check === false) {
+        let bgTime = new Date(this.initialDate.replace(/-/g, '/'))
+        let ckeckTime = new Date(item.formatDay.replace(/-/g, '/'))
+        let endTime = new Date(this.choosableDate.replace(/-/g, '/'))
+        if (bgTime.getTime() <= ckeckTime.getTime() && ckeckTime.getTime() <= endTime.getTime()) {
+          this._setTime(moment(item.formatDay))
+          this.viewDays[index].check = true
+        }
+      } else {
+        if (this.nowTime !== item.formatDay) {
+          this._removeTime(moment(item.formatDay))
+          this.viewDays[index].check = false
+        }
+      }
+    },
+    // 用户点击确定
+    confirm() {
+      this.peopleCount = this.people
+      this.$emit('hanleConfirm', {currentList: this.currentList, peopleCount: this.people})
+    },
+    countMinus() {
+      this.people = this.people-- < 2 ? 1 : this.people--
+    },
+    countPlus() {
+      if (this.goodsStock > this.people) {
+        this.people++
+      } else {
+        wx.showToast({
+          title: '超过剩余座位数',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+    }
+  }
+  watch = {
+    value(newValue, oldValue) {
+      this._init(newValue)
+    }
+  }
+  events = {
+    getDate(value) {
+      this._init(value.selectDate, value.presentDate)
+      let nowMonth = new Date(value.presentDate).getMonth()
+      let selectMonth = new Date(value.selectDate).getMonth()
+      if (nowMonth !== selectMonth) {
+        this.dataInitial = 1
+      }
+      this.initialDate = value.presentDate
+      this.choosableDate = this.add30Days(this.initialDate)
+    }
+  }
+  add30Days(val) {
+    let date1 = new Date(val)
+    let date2 = new Date(date1)
+    date2.setDate(date1.getDate() + 30)
+    let month = date2.getMonth() + 1
+    month = month < 10 ? '0' + month : month
+    let date = date2.getDate()
+    date = date < 10 ? '0' + date : date
+    return date2.getFullYear() + '-' + month + '-' + date
+  }
+  /**
+   * _getData
+   * 返回当前视图日期数组
+   * @param time
+   * @return [{day:31,month:3,year:2018},{day:1,month:4,year:2018},...]
+   */
+  _getData (time = moment()) {
+    this._setViewTime(time)
+    // 令时间变为当月1号的
+    const firstDay = time.startOf('month')
+    // 计算当月1号是星期几
+    const firstDayOfWeek = firstDay.format('E')
+    // 计算上个月多余时间
+    const last = this._calDate(firstDay.subtract(firstDayOfWeek - 1, 'days'), firstDayOfWeek - 1)
+    // 计算本月时间
+    const current = this._calDate(firstDay, firstDay.daysInMonth())
+    // 令时间变为本月末
+    const endDay = time.subtract(1, 'days')
+    // 当月与末是星期几
+    const endDayOfWeek = endDay.format('E')
+    // 计算下个月多余时间
+    const next = this._calDate(endDay.add(1, 'days'), 7 - endDayOfWeek)
+    return [...last, ...current, ...next]
+  }
+  /**
+   * _setTime
+   * 设定导出的时间
+   * @param time moment对象
+   */
+  _setTime (time = moment()) {
+    this.current = this._dealMoment(time)
+    this.currentList.push(this.current)
+  }
+  _removeTime(time = moment()) {
+    this.current = this._dealMoment(time)
+    let index = this._indexOf(this.current.formatDay)
+    this.currentList.splice(index, 1)
+  }
+  _indexOf(val) {
+    for (let i = 0; i < this.currentList.length; i++) {
+      if (this.currentList[i].formatDay === val) {
+        return i
+      }
+    }
+  }
+  /**
+   * _setTime
+   * 设定当前日历的时间
+   * @param time moment对象
+   */
+  _setViewTime (time = moment()) {
+    this.viewTime = this._dealMoment(time.startOf('month'))
+  }
+  /**
+   * _calDate
+   * 计算日期函数
+   * @param time moment对象
+   * @param length 返回数组的长度
+   * @return 返回日期数组
+   */
+  _calDate (time, length) {
+    let arr = []
+    for (let i = 0; i < length; i++) {
+      arr.push(this._dealMoment(time))
+      time.add(1, 'days')
+    }
+    return arr
+  }
+  /**
+   * _dealMoment
+   * 处理moment对象
+   * @param time moment对象
+   * @return 返回一个Object{year, month, day, formatDay}
+   */
+  _dealMoment (time) {
+    let { years, months, date } = time.toObject()
+    return {
+      year: years,
+      month: months + 1,
+      day: date,
+      weekCh: '周' + this.weeksCh[time.format('E') - 1],
+      formatDay: time.format('YYYY-MM-DD'),
+      check: false,
+      formatDate: time.format('MM-DD')
+    }
+  }
+  // 日期多选
+  _checkView() {
+    for (let i = 0; i < this.viewDays.length; i++) {
+      for (let y = 0; y < this.currentList.length; y++) {
+        if (this.viewDays[i].formatDay === this.currentList[y].formatDay) {
+          this.viewDays[i].check = true
+        }
+      }
+    }
+  }
+  /**
+   * _init
+   * 初始化
+   * @param value '2018-02-02' YYYY-MM-DD
+   */
+  _init (selectValue, presentValue) {
+    if (this.initial === 0) {
+      // this.viewDays = this._getData(moment(presentValue))
+      this.viewDays = this._getData(moment(selectValue))
+      this._setTime(moment(selectValue))
+      this._checkView()
+    }
+    this.initial += 1
+  }
+}
+</script>

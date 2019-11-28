@@ -1,0 +1,29 @@
+
+  <view class="wepy-com-calendar-root">
+    <view class="wepy-com-calendar {{themeClassName || ('theme-' + theme)}}" style="width: {{width}}px;">
+      <view class="header">
+        <view class="pre" bindtap="changeCurrMonth" data-wpychangecurrmonth-a="{{currMonth}}" data-wpychangecurrmonth-b="{{-1}}">《</view>
+        <picker class="picker" mode="date" fields="month" value="{{currYear}}-{{currMonth}}" bindchange="changePicker">
+          {{currYear}}-{{currMonth}}
+        </picker>
+        <view class="next" bindtap="changeCurrMonth" data-wpychangecurrmonth-a="{{currMonth}}" data-wpychangecurrmonth-b="{{1}}">》</view>
+      </view>
+      <view class="fullcalendar">
+        <view class="weeks">
+          <block wx:for="{{weeks}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+            <text>{{item}}</text>
+          </block>
+        </view>
+        <view class="body" style="height: {{width / 2}}px;">
+          <block wx:for="{{panelDaysList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+            <view class="body-item {{item.type}} {{item.active ? 'active' : ''}} {{item.checked ? 'select' : ''}}" data-info="{{item}}" data-index="{{index}}" bindtap="tapDayItem">
+              <view class="info">
+                <text class="active-icon" bindstyle="activeStyle">{{item.day}}</text>
+                <image  wx:if="{{item.checked}}" class="icon-checked" mode="widthFix" src="{{icon || icons[theme]}}"/>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>

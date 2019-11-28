@@ -1,0 +1,175 @@
+.base {
+  width: 100%;
+  box-sizing: border-box;
+}
+.pd30 {
+  padding: 30rpx 30rpx 30rpx 30rpx;
+}
+.pdl30 {
+  padding-left: 30rpx;
+}
+.pdr30 {
+  padding-right: 30rpx;
+}
+.pdt30 {
+  padding-top: 30rpx;
+}
+.pdb30 {
+  padding-bottom: 30rpx;
+}
+.pd20 {
+  padding: 20rpx 20rpx 20rpx 20rpx;
+}
+.pdt20 {
+  padding-top: 20rpx;
+}
+.pdl20 {
+  padding-left: 20rpx;
+}
+.pdr20 {
+  padding-right: 20rpx;
+}
+.pdb20 {
+  padding-bottom: 20rpx;
+}
+.mg30 {
+  margin: 30rpx;
+}
+.mt30 {
+  margin-top: 30rpx;
+}
+.ml30 {
+  margin-left: 30rpx;
+}
+.mr30 {
+  margin-right: 30rpx;
+}
+.mb30 {
+  margin-bottom: 30rpx;
+}
+.ml20 {
+  margin-left: 20rpx;
+}
+.mr20 {
+  margin-right: 20rpx;
+}
+.mt20 {
+  margin-top: 20rpx;
+}
+.mb20 {
+  margin-bottom: 20rpx;
+}
+.mr10 {
+  margin-right: 10rpx;
+}
+.mb10 {
+  margin-bottom: 10rpx;
+}
+.bt2 {
+  border-top: 2rpx solid #E5E5E5;
+}
+.bb2 {
+  border-bottom: 2rpx solid #E5E5E5;
+}
+.bgfff {
+  background: #fff;
+}
+.hidden {
+  display: none;
+}
+.tc {
+  text-align: center;
+}
+.tl {
+  text-align: left;
+}
+.tr {
+  text-align: right;
+}
+.c000 {
+  color: #000;
+}
+.c888 {
+  color: #888;
+}
+.c222 {
+  color: #222;
+}
+.disflex {
+  display: flex;
+}
+.jcsb {
+  justify-content: space-between;
+}
+.jcc {
+  justify-content: center;
+}
+.fdc {
+  flex-direction: column;
+}
+.jcr {
+  justify-content: right;
+}
+.aic {
+  align-items: center;
+}
+.c333 {
+  color: #333;
+}
+.c999 {
+  color: #999;
+}
+.cd2 {
+  color: #D20000;
+}
+.cfff {
+  color: #ffffff;
+}
+.c1a {
+  color: #1AAD19;
+}
+.img120 {
+  width: 120rpx;
+  height: 120rpx;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fz18 {
+  font-size: 18rpx;
+}
+.fz24 {
+  font-size: 24rpx;
+}
+.fz26 {
+  font-size: 26rpx;
+}
+.fz28 {
+  font-size: 28rpx;
+}
+.fz30 {
+  font-size: 30rpx;
+}
+.fz34 {
+  font-size: 34rpx;
+}
+.fz36 {
+  font-size: 36rpx;
+}
+.lh38 {
+  line-height: 38rpx;
+}
+.lh48 {
+  line-height: 48rpx;
+}
+.lh88 {
+  line-height: 88rpx;
+}
+.radis {
+  width: 100%;
+  border-radius: 6rpx;
+  background: #fff;
+  box-shadow: 0 0 12rpx rgba(0, 0, 0, 0.06);
+}

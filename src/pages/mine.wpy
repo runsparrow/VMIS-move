@@ -1,0 +1,18 @@
+
+<template>
+  <view>
+  wode 
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import { connect } from 'wepy-redux'
+
+@connect({})
+export default class mine extends wepy.page {
+  props = {};
+  data = {};
+  methods = {};
+}
+</script>

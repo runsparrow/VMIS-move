@@ -1,0 +1,22 @@
+@import "./../components/singleCalendar.wxss";
+.downlist._2d69130 {
+  border: 1px solid #eeeeee;
+  background-color: white;
+  height: 300px;
+}
+.addbutton._2d69130 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.content._2d69130 {
+  border: 1px solid #eeeeee;
+  height: 100%;
+  overflow-y: auto;
+}
+.popcentext._2d69130 {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}

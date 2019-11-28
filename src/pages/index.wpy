@@ -1,0 +1,24 @@
+
+<template>
+  <view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import { connect } from 'wepy-redux';
+
+@connect({})
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '日历管理工具',
+  };
+  components = {
+  };
+  data = {
+  };
+  computed = {};
+  methods = {
+  };
+}
+</script>
