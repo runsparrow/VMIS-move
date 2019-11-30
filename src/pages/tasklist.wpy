@@ -56,15 +56,12 @@ export default class tasklist extends wepy.page {
   };
   onLoad(){
     this.getlist();
-    console.log(1)
   }
   onShow() {
     this.getlist();
-    console.log(2)
   }
   getlist() {
     let token = wx.getStorageSync("token");
-
    
     const param = {
       Function: {
@@ -88,6 +85,7 @@ export default class tasklist extends wepy.page {
           this.setData({
             nowtimelist: res.data
           });
+          this.nowtimelist = res.data
         }
       },
       fail: err => {
@@ -101,6 +99,7 @@ export default class tasklist extends wepy.page {
       this.isview = false;
     },
     viewricheng(e) {
+      console.log("e.target.id",e)
       this.isview = true;
       this.show = true;
       this.$broadcast(
