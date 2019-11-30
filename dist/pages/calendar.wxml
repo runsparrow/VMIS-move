@@ -64,7 +64,7 @@
   <van-cell title="预约场地名称：" value="{{$viewcalendar$calendarinfos.site.name}}"/>
   <van-cell title="预约场馆名称：" value="{{$viewcalendar$calendarinfos.venue.name}}"/>
   <van-cell title="接待时间：" value="{{$viewcalendar$calendarinfos.receptionDateTime}}"/>
-  <van-cell title="接待人名称：" value="{{$viewcalendar$userinfo.realName}}"/>
+  <van-cell title="接待人名称：" value="{{$viewcalendar$calendarinfos.duijieren}}"/>
   <van-cell title="客户：" value="{{$viewcalendar$calendarinfos.customer.defaultName}}"/>
   <van-cell title="对接人名称：" value="{{$viewcalendar$calendarinfos.dockingName}}"/>
   <van-cell title="对接人联系方式：" value="{{$viewcalendar$calendarinfos.dockingMobile}}"/>

@@ -20,7 +20,7 @@
   left-arrow
   bind:click-left="onClickLeft"
 />
-<viewcalendar wx:if="{{isview}}" :calendarinfo.sync="calendarinfo"></viewcalendar><view wx:else></view>
+<viewcalendar wx:if="{{isview}}"></viewcalendar><view wx:else></view>
 </view>
 </van-popup>
      </view>
@@ -49,20 +49,19 @@ export default class tasklist extends wepy.page {
     nowtimelist: [],
     isview: false,
     show: false,
-    calendarinfo: {}
+    userlist: []
   };
   components = {
     viewcalendar
   };
-  onLoad(){
+  onLoad() {
     this.getlist();
-  }
-  onShow() {
-    this.getlist();
+    this.getuserlis();
   }
   getlist() {
     let token = wx.getStorageSync("token");
-   
+    let user = wx.getStorageSync("user");
+
     const param = {
       Function: {
         Name: "bykeyword",
@@ -85,7 +84,26 @@ export default class tasklist extends wepy.page {
           this.setData({
             nowtimelist: res.data
           });
-          this.nowtimelist = res.data
+          this.nowtimelist = res.data;
+        }
+      },
+      fail: err => {
+        console.log(err);
+      }
+    });
+  }
+  getuserlis() {
+    let token = wx.getStorageSync("token");
+    wx.request({
+      url: `http://localhost:5000/ERP/AVM/User/Read/Rows`,
+      method: "POST",
+      header: {
+        "content-type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${token}`
+      },
+      success: res => {
+        if (res && res.data) {
+          this.userlist = res.data;
         }
       },
       fail: err => {
@@ -99,12 +117,14 @@ export default class tasklist extends wepy.page {
       this.isview = false;
     },
     viewricheng(e) {
-      console.log("e.target.id",e)
       this.isview = true;
       this.show = true;
+      let taskinfo = this.nowtimelist.filter(p => p.id == e.target.id)[0];
+      taskinfo.duijieren = this.userlist.filter(p=>p.id==taskinfo.receptionId)[0].realName
+  
       this.$broadcast(
         "getcalendarinfo",
-        this.nowtimelist.filter(p => p.id == e.target.id)[0]
+       taskinfo
       );
     },
     onClose() {
