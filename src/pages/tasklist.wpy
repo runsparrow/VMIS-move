@@ -27,21 +27,21 @@
 </template>
 
 <script>
-import wepy from 'wepy';
-import { connect } from 'wepy-redux';
-import { stringify } from 'qs';
-import viewcalendar from '@/components/viewcalendar';
+import wepy from "wepy";
+import { connect } from "wepy-redux";
+import { stringify } from "qs";
+import viewcalendar from "@/components/viewcalendar";
 
 @connect({})
 export default class tasklist extends wepy.page {
   config = {
     usingComponents: {
-      'van-icon': '../../static/plugIn/icon/index',
-      'van-popup': '../../static/plugIn/popup/index',
-      'van-cell': '../../static/plugIn/cell/index',
-      'van-cell-group': '../../static/plugIn/cell-group/index',
-      'van-nav-bar': '../../static/plugIn/nav-bar/index',
-      'van-field': '../../static/plugIn/field/index'
+      "van-icon": "../../static/plugIn/icon/index",
+      "van-popup": "../../static/plugIn/popup/index",
+      "van-cell": "../../static/plugIn/cell/index",
+      "van-cell-group": "../../static/plugIn/cell-group/index",
+      "van-nav-bar": "../../static/plugIn/nav-bar/index",
+      "van-field": "../../static/plugIn/field/index"
     }
   };
   data = {
@@ -54,17 +54,22 @@ export default class tasklist extends wepy.page {
   components = {
     viewcalendar
   };
-  onLoad() {
+  onLoad(){
     this.getlist();
+    console.log(1)
   }
   onShow() {
-     this.getlist();
+    this.getlist();
+    console.log(2)
   }
   getlist() {
+    let token = wx.getStorageSync("token");
+
+   
     const param = {
       Function: {
-        Name: 'bykeyword',
-        Args: ['', 'Site', 'Venue', 'Customer']
+        Name: "bykeyword",
+        Args: ["", "Site", "Venue", "Customer"]
       }
     };
 
@@ -73,10 +78,10 @@ export default class tasklist extends wepy.page {
         allowDots: true,
         encodeValuesOnly: true
       })}`,
-      method: 'POST',
+      method: "POST",
       header: {
-        'content-type': 'application/x-www-form-urlencoded'
-        //Authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6Iua9mOa0gee-pCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJFUlBBcGkuRW50aXRpZXMuQVZNLlVzZXIiLCJpcCI6IjEyNy4wLjAuMSIsIm5iZiI6MTU3Mzk3NDU1MCwiZXhwIjoxNTc0MDYwOTUwLCJpc3MiOiJvY2Vsb3QiLCJhdWQiOiJldmVyeW9uZSJ9.lwPyby8LJfPjH_XigknRGsN_tLFYt4-KEvUa6GA596o'
+        "content-type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${token}`
       },
       success: res => {
         if (res && res.data) {
@@ -99,7 +104,7 @@ export default class tasklist extends wepy.page {
       this.isview = true;
       this.show = true;
       this.$broadcast(
-        'getcalendarinfo',
+        "getcalendarinfo",
         this.nowtimelist.filter(p => p.id == e.target.id)[0]
       );
     },

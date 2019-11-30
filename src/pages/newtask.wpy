@@ -35,13 +35,13 @@
     <van-button bindtap="opentime" slot="button" size="small" type="info">选择时间</van-button>
     </van-field>
   <van-field
-    value="{{ calendarinfo.receptionId }}"
+    value="{{ userinfo.realName}}"
       label="接待人名称："
     placeholder="请输入接待人名称"
     border="{{ false }}"
-        id="receptionId"
-    bind:change="onChange"
-  />
+    disabled
+  >
+    </van-field>
   <van-field
     value="{{ customername }}"
       label="客户："
@@ -68,7 +68,7 @@
 </van-cell-group>
 <!-- <van-button type="default">默认按钮</van-button>
 <van-button type="info">信息按钮</van-button> -->
-<button bindtap="aaa">asdas</button>
+<button bindtap="save">保存</button>
 
 <!--                控件                  -->
  <van-popup
@@ -140,39 +140,39 @@
 
 
 <script>
-import wepy from 'wepy';
-import Calendar from 'wepy-com-calendar';
-import { connect } from 'wepy-redux';
-import moment from 'moment';
-import { stringify } from 'qs';
+import wepy from "wepy";
+import Calendar from "wepy-com-calendar";
+import { connect } from "wepy-redux";
+import moment from "moment";
+import { stringify } from "qs";
 
 @connect({})
 export default class newtask extends wepy.page {
   config = {
     usingComponents: {
-      'van-icon': '../../static/plugIn/icon/index',
-      'van-cell': '../../static/plugIn/cell/index',
-      'van-cell-group': '../../static/plugIn/cell-group/index',
-      'van-field': '../../static/plugIn/field/index',
-      'van-button': '../../static/plugIn/button/index',
-      'van-popup': '../../static/plugIn/popup/index',
-      'van-action-sheet': '../../static/plugIn/action-sheet/index',
-      'van-datetime-picker': '../../static/plugIn/datetime-picker/index',
-      'van-picker': '../../static/plugIn/picker/index'
+      "van-icon": "../../static/plugIn/icon/index",
+      "van-cell": "../../static/plugIn/cell/index",
+      "van-cell-group": "../../static/plugIn/cell-group/index",
+      "van-field": "../../static/plugIn/field/index",
+      "van-button": "../../static/plugIn/button/index",
+      "van-popup": "../../static/plugIn/popup/index",
+      "van-action-sheet": "../../static/plugIn/action-sheet/index",
+      "van-datetime-picker": "../../static/plugIn/datetime-picker/index",
+      "van-picker": "../../static/plugIn/picker/index"
     }
   };
   props = {};
   data = {
     calendarinfo: {},
-    username: '',
-    password: '',
+    username: "",
+    password: "",
     asshow: false,
     sitelist: [],
     venuelist: [],
     sitecolumns: [],
     venuecolumns: [],
     customercolumns: [],
-    currentDate: '12:00',
+    currentDate: "12:00",
     minHour: 10,
     maxHour: 20,
     showpop: false,
@@ -182,9 +182,10 @@ export default class newtask extends wepy.page {
     minDate: new Date().getTime(),
     maxDate: new Date(2999, 10, 1).getTime(),
     currentDate: new Date().getTime(),
-    sitename: '',
-    venuename: '',
-    customername: ''
+    sitename: "",
+    venuename: "",
+    customername: "",
+    userinfo: {}
   };
   onChange(event) {
     // event.detail 为当前输入的值
@@ -192,16 +193,19 @@ export default class newtask extends wepy.page {
   }
   components = {};
   onLoad() {
+    let user = wx.getStorageSync("user");
+    this.userinfo = user;
     this.getsitelist();
     this.getcustomerlist();
   }
   getsitelist() {
+    let token = wx.getStorageSync("token");
     wx.request({
       url: `http://localhost:5000/ERP/SRM/Site/Read/Rows`,
-      method: 'POST',
+      method: "POST",
       header: {
-        'content-type': 'application/x-www-form-urlencoded'
-        //Authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6Iua9mOa0gee-pCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJFUlBBcGkuRW50aXRpZXMuQVZNLlVzZXIiLCJpcCI6IjEyNy4wLjAuMSIsIm5iZiI6MTU3Mzk3NDU1MCwiZXhwIjoxNTc0MDYwOTUwLCJpc3MiOiJvY2Vsb3QiLCJhdWQiOiJldmVyeW9uZSJ9.lwPyby8LJfPjH_XigknRGsN_tLFYt4-KEvUa6GA596o'
+        "content-type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${token}`
       },
       success: res => {
         if (res && res) {
@@ -217,16 +221,17 @@ export default class newtask extends wepy.page {
   getvenuelist(id) {
     const param = {
       Function: {
-        Name: 'bysiteid',
+        Name: "bysiteid",
         Args: [id]
       }
     };
+    let token = wx.getStorageSync("token");
     wx.request({
-      url: `http://localhost:5000/ERP/SRM/Venue/Read/Rows`,
-      method: 'POST',
+      url: `http://localhost:5000/ERP/SRM/Venue/Read/Rows?${stringify(param, { allowDots: true ,encodeValuesOnly: true})}`,
+      method: "POST",
       header: {
-        'content-type': 'application/x-www-form-urlencoded'
-        //Authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6Iua9mOa0gee-pCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJFUlBBcGkuRW50aXRpZXMuQVZNLlVzZXIiLCJpcCI6IjEyNy4wLjAuMSIsIm5iZiI6MTU3Mzk3NDU1MCwiZXhwIjoxNTc0MDYwOTUwLCJpc3MiOiJvY2Vsb3QiLCJhdWQiOiJldmVyeW9uZSJ9.lwPyby8LJfPjH_XigknRGsN_tLFYt4-KEvUa6GA596o'
+        "content-type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${token}`
       },
       success: res => {
         if (res && res) {
@@ -240,12 +245,13 @@ export default class newtask extends wepy.page {
     });
   }
   getcustomerlist() {
+    let token = wx.getStorageSync("token");
     wx.request({
       url: `http://localhost:5000/ERP/CRM/Customer/Read/Rows`,
-      method: 'POST',
+      method: "POST",
       header: {
-        'content-type': 'application/x-www-form-urlencoded'
-        //Authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6Iua9mOa0gee-pCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJFUlBBcGkuRW50aXRpZXMuQVZNLlVzZXIiLCJpcCI6IjEyNy4wLjAuMSIsIm5iZiI6MTU3Mzk3NDU1MCwiZXhwIjoxNTc0MDYwOTUwLCJpc3MiOiJvY2Vsb3QiLCJhdWQiOiJldmVyeW9uZSJ9.lwPyby8LJfPjH_XigknRGsN_tLFYt4-KEvUa6GA596o'
+        "content-type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${token}`
       },
       success: res => {
         if (res && res) {
@@ -259,28 +265,67 @@ export default class newtask extends wepy.page {
     });
   }
   methods = {
-    aaa() {
-      console.log(1), console.log('calendarinfo', this.calendarinfo);
+    save() {
+      let token = wx.getStorageSync("token");
+      this.calendarinfo.receptionId = this.userinfo.userId;
+
+      const param = {
+        entity: {
+          ...this.calendarinfo
+        }
+      };
+      console.log("param", param);
+
+      wx.request({
+        url: `http://localhost:5000/ERP/BPM/task/Create?${stringify(param, {
+          allowDots: true
+        })}`,
+        method: "POST",
+        header: {
+          "content-type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${token}`
+        },
+        success: res => {
+          if (res && res.statusCode == 200) {
+            wx.showToast({
+              title: "保存成功",
+              icon: "success",
+              duration: 2000,
+              success: () => {
+                wepy.switchTab({
+                  url: "calendar"
+                });
+              }
+            });
+          } else {
+            wx.showToast({
+              title: "保存失败",
+              icon: "none",
+              duration: 2000
+            });
+          }
+        },
+        fail: err => {
+          console.log(err);
+        }
+      });
     },
     onChange(e) {
       switch (e.target.id) {
-        case 'name':
+        case "name":
           this.calendarinfo.name = e.detail;
           break;
-        case 'receptionDateTime':
+        case "receptionDateTime":
           this.calendarinfo.receptionDateTime = e.detail;
           break;
-        case 'receptionId':
-          this.calendarinfo.receptionId = e.detail;
-          break;
-        case 'dockingName':
+        case "dockingName":
           this.calendarinfo.dockingName = e.detail;
           break;
-        case 'dockingMobile':
+        case "dockingMobile":
           this.calendarinfo.dockingMobile = e.detail;
           break;
       }
-      console.log('this.calendarinfo', this.calendarinfo);
+      console.log("this.calendarinfo", this.calendarinfo);
     },
     onsiteChange(e) {
       let siteinfo = this.sitelist[e.detail.index];
@@ -306,7 +351,7 @@ export default class newtask extends wepy.page {
     },
     onconfirmdpk(e) {
       this.calendarinfo.receptionDateTime = moment(e.detail).format(
-        'YYYY-MM-DD HH:mm:ss'
+        "YYYY-MM-DD HH:mm:ss"
       );
       this.showpop = false;
     },
@@ -317,7 +362,7 @@ export default class newtask extends wepy.page {
       this.showpkv = true;
     },
     oncsfocus() {
-      console.log(1)
+      console.log(1);
       this.showpcs = true;
     },
     opentime() {

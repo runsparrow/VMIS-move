@@ -7,14 +7,15 @@
   <van-field value="{{ calendarinfo.receptionDateTime }}" label="接待时间：" placeholder="请输入接待时间" border="{{ false }}" id="receptionDateTime" disabled bind:change="onChange">
     <van-button bindtap="opentime" slot="button" size="small" type="info">选择时间</van-button>
     </van-field>
-  <van-field value="{{ calendarinfo.receptionId }}" label="接待人名称：" placeholder="请输入接待人名称" border="{{ false }}" id="receptionId" bind:change="onChange"/>
+  <van-field value="{{ userinfo.realName}}" label="接待人名称：" placeholder="请输入接待人名称" border="{{ false }}" disabled>
+    </van-field>
   <van-field value="{{ customername }}" label="客户：" placeholder="请输入客户" border="{{ false }}" bind:focus="oncsfocus"/>
    <van-field value="{{ calendarinfo.dockingName }}" label="对接人名称：" placeholder="请输入对接人名称" border="{{ false }}" id="dockingName" bind:change="onChange"/>
   <van-field value="{{ calendarinfo.dockingMobile }}" label="对接人联系方式：" placeholder="请输入对接人联系方式" border="{{ false }}" id="dockingMobile" bind:change="onChange"/>
 </van-cell-group>
 <!-- <van-button type="default">默认按钮</van-button>
 <van-button type="info">信息按钮</van-button> -->
-<button bindtap="aaa">asdas</button>
+<button bindtap="save">保存</button>
 
 <!--                控件                  -->
  <van-popup show="{{ showpop }}" closeable="closeable" position="bottom" custom-style="height: 50%" bind:close="onClose" z-index="610">

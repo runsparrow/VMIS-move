@@ -18,13 +18,10 @@ export default class Login extends wepy.page {
       "van-button": "../../static/plugIn//button/index"
     }
   };
-  onLoad() {
+  onShow() {
     this.loginsystem();
   }
-  onShow() {
-     this.loginsystem();
-  }
-  loginsystem(){
+  loginsystem() {
     wepy.login().then(res => {
       const code = res.code;
       wx.request({
@@ -38,9 +35,9 @@ export default class Login extends wepy.page {
           if (response && response.data) {
             let data = response.data;
             if (data.token) {
-
               //存一下token  后续api都加上token，只做一下我的页面，美化界面
-
+              wx.setStorageSync("token", data.token.tokenValue);
+               wx.setStorageSync("user", data.user);
               wepy.switchTab({
                 url: "calendar"
               });

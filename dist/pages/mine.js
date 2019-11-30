@@ -1,9 +1,11 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _dec, _class;
 
@@ -35,12 +37,21 @@ var mine = (_dec = (0, _wepyRedux.connect)({}), _dec(_class = function (_wepy$pa
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = mine.__proto__ || Object.getPrototypeOf(mine)).call.apply(_ref, [this].concat(args))), _this), _this.props = {}, _this.data = {}, _this.methods = {}, _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = mine.__proto__ || Object.getPrototypeOf(mine)).call.apply(_ref, [this].concat(args))), _this), _this.props = {}, _this.data = {
+      userinfo: {}
+    }, _this.methods = {}, _temp), _possibleConstructorReturn(_this, _ret);
   }
+
+  _createClass(mine, [{
+    key: "onLoad",
+    value: function onLoad() {
+      this.userinfo = wx.getStorageSync("user");
+    }
+  }]);
 
   return mine;
 }(_wepy2.default.page)) || _class);
 
 Page(require('./../npm/wepy/lib/wepy.js').default.$createPage(mine , 'pages/mine'));
 
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1pbmUuanMiXSwibmFtZXMiOlsibWluZSIsInByb3BzIiwiZGF0YSIsIm1ldGhvZHMiLCJ3ZXB5IiwicGFnZSJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7O0FBQ0E7Ozs7QUFDQTs7Ozs7Ozs7OztJQUdxQkEsSSxXQURwQix3QkFBUSxFQUFSLEM7Ozs7Ozs7Ozs7Ozs7O2tMQUVDQyxLLEdBQVEsRSxRQUNSQyxJLEdBQU8sRSxRQUNQQyxPLEdBQVUsRTs7OztFQUhzQkMsZUFBS0MsSTtrQkFBbEJMLEkiLCJmaWxlIjoibWluZS5qcyIsInNvdXJjZXNDb250ZW50IjpbIlxuaW1wb3J0IHdlcHkgZnJvbSAnd2VweSdcbmltcG9ydCB7IGNvbm5lY3QgfSBmcm9tICd3ZXB5LXJlZHV4J1xuXG5AY29ubmVjdCh7fSlcbmV4cG9ydCBkZWZhdWx0IGNsYXNzIG1pbmUgZXh0ZW5kcyB3ZXB5LnBhZ2Uge1xuICBwcm9wcyA9IHt9O1xuICBkYXRhID0ge307XG4gIG1ldGhvZHMgPSB7fTtcbn1cbiJdfQ==
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1pbmUuanMiXSwibmFtZXMiOlsibWluZSIsInByb3BzIiwiZGF0YSIsInVzZXJpbmZvIiwibWV0aG9kcyIsInd4IiwiZ2V0U3RvcmFnZVN5bmMiLCJ3ZXB5IiwicGFnZSJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7QUFDQTs7OztBQUNBOzs7Ozs7Ozs7O0lBR3FCQSxJLFdBRHBCLHdCQUFRLEVBQVIsQzs7Ozs7Ozs7Ozs7Ozs7a0xBRUNDLEssR0FBUSxFLFFBQ1JDLEksR0FBTztBQUNMQyxnQkFBVTtBQURMLEssUUFNUEMsTyxHQUFVLEU7Ozs7OzZCQUhEO0FBQ1AsV0FBS0QsUUFBTCxHQUFnQkUsR0FBR0MsY0FBSCxDQUFrQixNQUFsQixDQUFoQjtBQUNEOzs7O0VBUCtCQyxlQUFLQyxJO2tCQUFsQlIsSSIsImZpbGUiOiJtaW5lLmpzIiwic291cmNlc0NvbnRlbnQiOlsiXG5pbXBvcnQgd2VweSBmcm9tIFwid2VweVwiO1xuaW1wb3J0IHsgY29ubmVjdCB9IGZyb20gXCJ3ZXB5LXJlZHV4XCI7XG5cbkBjb25uZWN0KHt9KVxuZXhwb3J0IGRlZmF1bHQgY2xhc3MgbWluZSBleHRlbmRzIHdlcHkucGFnZSB7XG4gIHByb3BzID0ge307XG4gIGRhdGEgPSB7XG4gICAgdXNlcmluZm86IHt9XG4gIH07XG4gIG9uTG9hZCgpIHtcbiAgICB0aGlzLnVzZXJpbmZvID0gd3guZ2V0U3RvcmFnZVN5bmMoXCJ1c2VyXCIpO1xuICB9XG4gIG1ldGhvZHMgPSB7fTtcbn1cbiJdfQ==

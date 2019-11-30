@@ -6,7 +6,7 @@
   <van-cell title="预约场地名称：" value="{{calendarinfos.site.name}}" />
   <van-cell title="预约场馆名称：" value="{{calendarinfos.venue.name}}" />
   <van-cell title="接待时间：" value="{{calendarinfos.receptionDateTime}}" />
-  <van-cell title="接待人名称：" value="{{}}" />
+  <van-cell title="接待人名称：" value="{{userinfo.realName}}" />
   <van-cell title="客户：" value="{{calendarinfos.customer.defaultName}}" />
   <van-cell title="对接人名称：" value="{{calendarinfos.dockingName}}" />
   <van-cell title="对接人联系方式：" value="{{calendarinfos.dockingMobile}}" />
@@ -36,7 +36,8 @@ export default class viewcalendar extends wepy.page {
     calendarinfo:{}
   };
   data = {
-    calendarinfos:{}
+    calendarinfos:{},
+    userinfo:{}
   };
    events = {
     getcalendarinfo(value) {
@@ -48,7 +49,9 @@ export default class viewcalendar extends wepy.page {
    
   };
   onLoad() {
-   
+    let user = wx.getStorageSync("user");
+    this.userinfo = user;
+    console.log(" this.userinfo", this.userinfo);
   }
   methods = {
   };

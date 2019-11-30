@@ -41,25 +41,24 @@
 </template>
 
 <script>
-import wepy from 'wepy';
-import Calendar from 'wepy-com-calendar';
-import { connect } from 'wepy-redux';
-import singleCalendar from '@/components/singleCalendar';
-import viewcalendar from '@/components/viewcalendar';
-import editcalendar from '@/components/editcalendar';
-import moment from 'moment';
-import { stringify } from 'qs';
+import wepy from "wepy";
+import Calendar from "wepy-com-calendar";
+import { connect } from "wepy-redux";
+import singleCalendar from "@/components/singleCalendar";
+import viewcalendar from "@/components/viewcalendar";
+import moment from "moment";
+import { stringify } from "qs";
 
 @connect({})
 export default class calendar extends wepy.page {
   config = {
     usingComponents: {
-      'van-icon': '../../static/plugIn/icon/index',
-      'van-popup': '../../static/plugIn/popup/index',
-      'van-cell': '../../static/plugIn/cell/index',
-      'van-cell-group': '../../static/plugIn/cell-group/index',
-      'van-nav-bar': '../../static/plugIn/nav-bar/index',
-      'van-field': '../../static/plugIn/field/index'
+      "van-icon": "../../static/plugIn/icon/index",
+      "van-popup": "../../static/plugIn/popup/index",
+      "van-cell": "../../static/plugIn/cell/index",
+      "van-cell-group": "../../static/plugIn/cell-group/index",
+      "van-nav-bar": "../../static/plugIn/nav-bar/index",
+      "van-field": "../../static/plugIn/field/index"
     }
   };
   props = {};
@@ -74,44 +73,43 @@ export default class calendar extends wepy.page {
   };
   components = {
     singleCalendar,
-    viewcalendar,
-    editcalendar
+    viewcalendar
   };
   onLoad() {
-    this.nowtime = moment().format('YYYY-MM-DD');
+    this.nowtime = moment().format("YYYY-MM-DD");
     this.getlist();
   }
   getlist(
     start = moment()
-      .startOf('month')
-      .format('YYYY-MM-DD'),
+      .startOf("month")
+      .format("YYYY-MM-DD"),
     end = moment()
-      .endOf('month')
-      .format('YYYY-MM-DD')
+      .endOf("month")
+      .format("YYYY-MM-DD")
   ) {
     const param = {
       Function: {
-        Args: ['', 'ReceptionDateTime', 'Site', 'Venue', 'Customer']
+        Args: ["", "ReceptionDateTime", "Site", "Venue", "Customer"]
       },
       StartDate: start,
       EndDate: end
     };
+    let token = wx.getStorageSync("token");
 
     wx.request({
       url: `http://localhost:5000/ERP/BPM/Task/Read/Query?${stringify(param, {
         allowDots: true,
         encodeValuesOnly: true
       })}`,
-      method: 'POST',
+      method: "POST",
       header: {
-        'content-type': 'application/x-www-form-urlencoded'
-        //Authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3VybmFtZSI6Iua9mOa0gee-pCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJFUlBBcGkuRW50aXRpZXMuQVZNLlVzZXIiLCJpcCI6IjEyNy4wLjAuMSIsIm5iZiI6MTU3Mzk3NDU1MCwiZXhwIjoxNTc0MDYwOTUwLCJpc3MiOiJvY2Vsb3QiLCJhdWQiOiJldmVyeW9uZSJ9.lwPyby8LJfPjH_XigknRGsN_tLFYt4-KEvUa6GA596o'
+        "content-type": "application/x-www-form-urlencoded",
+        Authorization: `Bearer ${token}`
       },
       success: res => {
         if (res && res) {
-          console.log(res.data.rows);
           this.list = res.data.rows;
-          this.$broadcast('getlist', res.data.rows);
+          this.$broadcast("getlist", res.data.rows);
         }
       },
       fail: err => {
@@ -129,7 +127,7 @@ export default class calendar extends wepy.page {
       this.nowtime = e.formatDay;
       let cflist = [];
       for (let i of this.list) {
-        if (moment(i.receptionDateTime).format('YYYY-MM-DD') == e.formatDay) {
+        if (moment(i.receptionDateTime).format("YYYY-MM-DD") == e.formatDay) {
           cflist.push(i);
         }
       }
@@ -137,33 +135,34 @@ export default class calendar extends wepy.page {
     },
     handlenextmonth(datetime) {
       let start = moment(datetime)
-        .startOf('month')
-        .format('YYYY-MM-DD');
+        .startOf("month")
+        .format("YYYY-MM-DD");
       let end = moment(datetime)
-        .endOf('month')
-        .format('YYYY-MM-DD');
+        .endOf("month")
+        .format("YYYY-MM-DD");
       this.getlist(start, end);
     },
     handleprevmonth(datetime) {
       let start = moment(datetime)
-        .startOf('month')
-        .format('YYYY-MM-DD');
+        .startOf("month")
+        .format("YYYY-MM-DD");
       let end = moment(datetime)
-        .endOf('month')
-        .format('YYYY-MM-DD');
+        .endOf("month")
+        .format("YYYY-MM-DD");
       this.getlist(start, end);
     },
     newricheng() {
+
       wepy.navigateTo({
-        url:"newtask"
-      })
+        url: "newtask"
+      });
     },
     viewricheng(e) {
       this.isview = true;
       this.calendarinfo = this.list.map(p => p.id == e.target.id);
       this.show = true;
       this.$broadcast(
-        'getcalendarinfo',
+        "getcalendarinfo",
         this.list.filter(p => p.id == e.target.id)[0]
       );
     },

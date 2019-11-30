@@ -64,44 +64,14 @@
   <van-cell title="预约场地名称：" value="{{$viewcalendar$calendarinfos.site.name}}"/>
   <van-cell title="预约场馆名称：" value="{{$viewcalendar$calendarinfos.venue.name}}"/>
   <van-cell title="接待时间：" value="{{$viewcalendar$calendarinfos.receptionDateTime}}"/>
-  <van-cell title="接待人名称：" value="{{}}"/>
+  <van-cell title="接待人名称：" value="{{$viewcalendar$userinfo.realName}}"/>
   <van-cell title="客户：" value="{{$viewcalendar$calendarinfos.customer.defaultName}}"/>
   <van-cell title="对接人名称：" value="{{$viewcalendar$calendarinfos.dockingName}}"/>
   <van-cell title="对接人联系方式：" value="{{$viewcalendar$calendarinfos.dockingMobile}}"/>
 </van-cell-group>
  </view>
 <view  wx:else class="_622fad0"/>
-
- <view wx:if="{{isedit}}" class="_622fad0">
-   <van-cell-group>
-       <van-field value="{{ $editcalendar$calendarinfo.name }}" label="日程名称：" placeholder="请输入日程名称" border="{{ $editcalendar$false }}" id="name"  bind:change="$editcalendar$onChange"/>
-  <van-field value="{{ $editcalendar$calendarinfo.siteId }}" label="预约场地名称：" placeholder="请输入预约场地名称" border="{{ $editcalendar$false }}" id="siteId"  bind:change="$editcalendar$onChange" bind:focus="$editcalendar$onasfocus"/>
-  <van-field value="{{ $editcalendar$calendarinfo.venueId }}" label="预约场馆名称：" placeholder="请输入预约场馆名称" border="{{ $editcalendar$false }}" id="venueId" bind:change="$editcalendar$onChange"/>
-  <van-field value="{{ $editcalendar$calendarinfo.receptionDateTime }}" label="接待时间：" placeholder="请输入接待时间" border="{{ $editcalendar$false }}" id="receptionDateTime" disabled bind:change="$editcalendar$onChange">
-    <van-button bindtap="$editcalendar$opentime" slot="button" size="small" type="info">选择时间</van-button>
-    </van-field>
-  <van-field value="{{ $editcalendar$calendarinfo.receptionId }}" label="接待人名称：" placeholder="请输入接待人名称" border="{{ $editcalendar$false }}" id="receptionId" bind:change="$editcalendar$onChange"/>
-  <van-field value="{{ $editcalendar$calendarinfo.customerId }}" label="客户：" placeholder="请输入客户" border="{{ $editcalendar$false }}" id="customerId" bind:change="$editcalendar$onChange"/>
-   <van-field value="{{ $editcalendar$calendarinfo.dockingName }}" label="对接人名称：" placeholder="请输入对接人名称" border="{{ $editcalendar$false }}" id="dockingName" bind:change="$editcalendar$onChange"/>
-  <van-field value="{{ $editcalendar$calendarinfo.dockingMobile }}" label="对接人联系方式：" placeholder="请输入对接人联系方式" border="{{ $editcalendar$false }}" id="dockingMobile" bind:change="$editcalendar$onChange"/>
-</van-cell-group>
-<!-- <van-button type="default">默认按钮</van-button>
-<van-button type="info">信息按钮</van-button> -->
-<button bindtap="$editcalendar$aaa">asdas</button>
-
-<!--                控件                  -->
- <van-popup show="{{ $editcalendar$showpop }}" closeable="closeable" position="bottom" custom-style="height: 50%" bind:close="$editcalendar$onClose" z-index="610">
-  <van-datetime-picker type="time" value="{{ $editcalendar$currentDate }}" min-hour="{{ $editcalendar$minHour }}" max-hour="{{ $editcalendar$maxHour }}" bind:input="$editcalendar$onInput"/>
-</van-popup>
-
-<van-popup show="{{ $editcalendar$showpk }}" closeable="closeable" position="bottom" custom-style="height: 50%" bind:close="$editcalendar$onClose" overlay="true" z-index="610">
-<view>
-<van-picker columns="{{ $editcalendar$columns }}" bind:change="$editcalendar$onChange"/>
-</view>
-</van-popup>
-
- </view>
-<view wx:else class="_622fad0"/>
+<editcalendar wx:if="{{isedit}}" class="_622fad0"/><view wx:else class="_622fad0"/>
 </view>
 </van-popup>
 
