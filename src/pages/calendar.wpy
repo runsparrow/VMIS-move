@@ -11,7 +11,7 @@
     </view>
     <view class="content">
      <van-cell-group>
-            <van-cell wx-if="{{nowtimelist.length>0}}" wx:for="{{nowtimelist}}" id="{{item.id}}" wx:key="index" title="{{item.name}}" is-link bind:click="viewricheng"/>
+            <van-cell wx:for="{{nowtimelist}}" id="{{item.id}}" wx:key="index" title="{{item.name}}" is-link bind:click="viewricheng"/>
       </van-cell-group>
      </view>
     </view>
@@ -77,6 +77,11 @@ export default class calendar extends wepy.page {
     viewcalendar
   };
   onLoad() {
+    // this.nowtime = moment().format("YYYY-MM-DD");
+    // this.getlist();
+    // this.getuserlis();
+  }
+  onShow() {
     this.nowtime = moment().format("YYYY-MM-DD");
     this.getlist();
     this.getuserlis();
@@ -111,6 +116,16 @@ export default class calendar extends wepy.page {
       success: res => {
         if (res && res) {
           this.list = res.data.rows;
+          let nowtime = moment().format("YYYY-MM-DD");
+          let cflist = [];
+          for (let i of res.data.rows) {
+            if (moment(i.receptionDateTime).format("YYYY-MM-DD") == nowtime) {
+              cflist.push(i);
+            }
+          }
+          console.log("cflist", cflist);
+          this.setData({nowtimelist:cflist})
+          //this.nowtimelist = cflist;
           this.$broadcast("getlist", res.data.rows);
         }
       },
@@ -181,12 +196,11 @@ export default class calendar extends wepy.page {
       this.isview = true;
       this.show = true;
       let taskinfo = this.list.filter(p => p.id == e.target.id)[0];
-      taskinfo.duijieren = this.userlist.filter(p=>p.id==taskinfo.receptionId)[0].realName
-  
-      this.$broadcast(
-        "getcalendarinfo",
-       taskinfo
-      );
+      taskinfo.duijieren = this.userlist.filter(
+        p => p.id == taskinfo.receptionId
+      )[0].realName;
+
+      this.$broadcast("getcalendarinfo", taskinfo);
     },
     onClose() {
       this.show = false;

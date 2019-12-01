@@ -34,7 +34,7 @@ export default class Login extends wepy.page {
           console.log("response", response);
           if (response && response.data) {
             let data = response.data;
-            if (data.token) {
+            if (Object.keys(data.token).length>0) {
               //存一下token  后续api都加上token，只做一下我的页面，美化界面
               wx.setStorageSync("token", data.token.tokenValue);
                wx.setStorageSync("user", data.user);

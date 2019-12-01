@@ -209,7 +209,6 @@ export default class Calendar extends wepy.component {
     initialDate: ''
   };
   onLoad(value) {
-    console.log('list2222', this.list);
     this._init(value);
     this.nowTime = this.current;
     this.initialDate = this.current.formatDay;
@@ -218,7 +217,7 @@ export default class Calendar extends wepy.component {
   }
   events = {
     getlist(value) {
-      console.log('value', value);
+      //console.log('value', value);
       this.datetimelist = value;
       for (let i of this.viewDays) {
         if(this.datetimelist.find(p=>moment(p.receptionDateTime).format("YYYY-MM-DD")==i.formatDay))
@@ -360,7 +359,7 @@ export default class Calendar extends wepy.component {
     if (this.initial === 0) {
       this.viewDays = this._getData(moment(value));
         this.viewDays.map(p => p.isday = false);
-      console.log('this.viewDays', this.viewDays);
+      //console.log('this.viewDays', this.viewDays);
       this._setTime(moment(value));
     }
     this.initial += 1;
