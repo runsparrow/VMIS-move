@@ -44,7 +44,6 @@ export default class viewcalendar extends wepy.page {
   };
   components = {};
   onLoad() {
-    this.getuserlis()
   }
   
   methods = {};
