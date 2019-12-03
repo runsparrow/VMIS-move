@@ -52,6 +52,7 @@ import { stringify } from "qs";
 @connect({})
 export default class calendar extends wepy.page {
   config = {
+    navigationBarTitleText: '日程管理系统',
     usingComponents: {
       "van-icon": "../../static/plugIn/icon/index",
       "van-popup": "../../static/plugIn/popup/index",
@@ -170,6 +171,7 @@ export default class calendar extends wepy.page {
       this.nowtimelist = cflist;
     },
     handlenextmonth(datetime) {
+      console.log("datetime",datetime)
       let start = moment(datetime)
         .startOf("month")
         .format("YYYY-MM-DD");
@@ -179,6 +181,7 @@ export default class calendar extends wepy.page {
       this.getlist(start, end);
     },
     handleprevmonth(datetime) {
+       console.log("datetime",datetime)
       let start = moment(datetime)
         .startOf("month")
         .format("YYYY-MM-DD");

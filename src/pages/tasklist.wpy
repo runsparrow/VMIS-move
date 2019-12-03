@@ -35,6 +35,7 @@ import viewcalendar from "@/components/viewcalendar";
 @connect({})
 export default class tasklist extends wepy.page {
   config = {
+     navigationBarTitleText: '日程管理系统',
     usingComponents: {
       "van-icon": "../../static/plugIn/icon/index",
       "van-popup": "../../static/plugIn/popup/index",

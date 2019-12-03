@@ -16,6 +16,9 @@ import { connect } from "wepy-redux";
 
 @connect({})
 export default class mine extends wepy.page {
+   config = {
+     navigationBarTitleText: '日程管理系统',
+   }
   props = {};
   data = {
     userinfo: {}

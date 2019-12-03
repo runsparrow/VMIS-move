@@ -31,21 +31,22 @@ export default class viewcalendar extends wepy.page {
       "van-cell-group": "../../static/plugIn/cell-group/index"
     }
   };
-  props = {
-  };
+  props = {};
   data = {
-    calendarinfos:{},
+    calendarinfos: {},
     receptionId: ""
   };
   events = {
     getcalendarinfo(value) {
       this.calendarinfos = value;
+      this.calendarinfos.receptionDateTime = moment(
+        value.receptionDateTime
+      ).format("YYYY-MM-DD HH:mm:ss");
     }
   };
   components = {};
-  onLoad() {
-  }
-  
+  onLoad() {}
+
   methods = {};
 }
 </script>

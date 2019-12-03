@@ -149,6 +149,7 @@ import { stringify } from "qs";
 @connect({})
 export default class newtask extends wepy.page {
   config = {
+     navigationBarTitleText: '日程管理系统',
     usingComponents: {
       "van-icon": "../../static/plugIn/icon/index",
       "van-cell": "../../static/plugIn/cell/index",
