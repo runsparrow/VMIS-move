@@ -56,7 +56,11 @@ export default class tasklist extends wepy.page {
     viewcalendar
   };
   onLoad() {
-    this.getlist();
+    // this.getlist();
+    // this.getuserlis();
+  }
+  onShow(){
+      this.getlist();
     this.getuserlis();
   }
   getlist() {

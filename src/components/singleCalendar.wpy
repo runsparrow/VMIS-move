@@ -209,11 +209,17 @@ export default class Calendar extends wepy.component {
     initialDate: ""
   };
   onLoad(value) {
+     console.log(2)
     this._init(value);
     this.nowTime = this.current;
     this.initialDate = this.current.formatDay;
 
     this.$apply();
+  }
+  onShow(){
+    console.log(1)
+     this._setTime(moment());
+     this.$apply();
   }
   events = {
     getlist(value) {
@@ -263,6 +269,7 @@ export default class Calendar extends wepy.component {
     // 改变最后导出的时间
     changeResultTime(e) {
       let item = e.currentTarget.dataset.item;
+      console.log("item",item)
       this.current = item;
       this.$emit("hanleConfirm", item);
     }
