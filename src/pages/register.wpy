@@ -44,7 +44,7 @@ export default class register extends wepy.page {
     },
     login() {
       wx.request({
-        url: `http://localhost:5000/ERP/Auth/WeChatBind?accountName=${
+        url: `http://211.149.163.211:4000/ERP/Auth/WeChatBind?accountName=${
           this.userName
         }&accountPwd=${this.password}&weChatOpenId=${this.openid}`,
         method: "GET",

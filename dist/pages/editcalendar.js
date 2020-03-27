@@ -142,7 +142,7 @@ var editcalendar = (_dec = (0, _wepyRedux.connect)({}), _dec(_class = function (
       console.log(" this.userinfo", this.userinfo);
       var token = wx.getStorageSync("token");
       wx.request({
-        url: "http://localhost:5000/ERP/SRM/Site/Read/Rows",
+        url: "http://211.149.163.211:4000/ERP/SRM/Site/Read/Rows",
         method: "POST",
         header: {
           "content-type": "application/x-www-form-urlencoded",

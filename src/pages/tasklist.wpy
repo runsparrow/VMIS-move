@@ -75,7 +75,7 @@ export default class tasklist extends wepy.page {
     };
 
     wx.request({
-      url: `http://localhost:5000/ERP/BPM/task/Read/Rows?${stringify(param, {
+      url: `http://211.149.163.211:4000/ERP/BPM/task/Read/Rows?${stringify(param, {
         allowDots: true,
         encodeValuesOnly: true
       })}`,
@@ -100,7 +100,7 @@ export default class tasklist extends wepy.page {
   getuserlis() {
     let token = wx.getStorageSync("token");
     wx.request({
-      url: `http://localhost:5000/ERP/AVM/User/Read/Rows`,
+      url: `http://211.149.163.211:4000/ERP/AVM/User/Read/Rows`,
       method: "POST",
       header: {
         "content-type": "application/x-www-form-urlencoded",

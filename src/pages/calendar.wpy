@@ -105,7 +105,7 @@ export default class calendar extends wepy.page {
     let token = wx.getStorageSync("token");
 
     wx.request({
-      url: `http://localhost:5000/ERP/BPM/Task/Read/Query?${stringify(param, {
+      url: `http://211.149.163.211:4000/ERP/BPM/Task/Read/Query?${stringify(param, {
         allowDots: true,
         encodeValuesOnly: true
       })}`,
@@ -124,7 +124,7 @@ export default class calendar extends wepy.page {
               cflist.push(i);
             }
           }
-          console.log("cflist", cflist);
+         // console.log("cflist", cflist);
           this.setData({nowtimelist:cflist})
           //this.nowtimelist = cflist;
           this.$broadcast("getlist", res.data.rows);
@@ -138,7 +138,7 @@ export default class calendar extends wepy.page {
   getuserlis() {
     let token = wx.getStorageSync("token");
     wx.request({
-      url: `http://localhost:5000/ERP/AVM/User/Read/Rows`,
+      url: `http://211.149.163.211:4000/ERP/AVM/User/Read/Rows`,
       method: "POST",
       header: {
         "content-type": "application/x-www-form-urlencoded",
@@ -171,7 +171,7 @@ export default class calendar extends wepy.page {
       this.nowtimelist = cflist;
     },
     handlenextmonth(datetime) {
-      console.log("datetime",datetime)
+     // console.log("datetime",datetime)
       let start = moment(datetime)
         .startOf("month")
         .format("YYYY-MM-DD");
@@ -181,7 +181,7 @@ export default class calendar extends wepy.page {
       this.getlist(start, end);
     },
     handleprevmonth(datetime) {
-       console.log("datetime",datetime)
+      // console.log("datetime",datetime)
       let start = moment(datetime)
         .startOf("month")
         .format("YYYY-MM-DD");

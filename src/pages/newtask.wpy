@@ -190,7 +190,7 @@ export default class newtask extends wepy.page {
   };
   onChange(event) {
     // event.detail 为当前输入的值
-    console.log(event.detail);
+  //  console.log(event.detail);
   }
   components = {};
   onLoad() {
@@ -202,7 +202,7 @@ export default class newtask extends wepy.page {
   getsitelist() {
     let token = wx.getStorageSync("token");
     wx.request({
-      url: `http://localhost:5000/ERP/SRM/Site/Read/Rows`,
+      url: `http://211.149.163.211:4000/ERP/SRM/Site/Read/Rows`,
       method: "POST",
       header: {
         "content-type": "application/x-www-form-urlencoded",
@@ -228,7 +228,7 @@ export default class newtask extends wepy.page {
     };
     let token = wx.getStorageSync("token");
     wx.request({
-      url: `http://localhost:5000/ERP/SRM/Venue/Read/Rows?${stringify(param, { allowDots: true ,encodeValuesOnly: true})}`,
+      url: `http://211.149.163.211:4000/ERP/SRM/Venue/Read/Rows?${stringify(param, { allowDots: true ,encodeValuesOnly: true})}`,
       method: "POST",
       header: {
         "content-type": "application/x-www-form-urlencoded",
@@ -248,7 +248,7 @@ export default class newtask extends wepy.page {
   getcustomerlist() {
     let token = wx.getStorageSync("token");
     wx.request({
-      url: `http://localhost:5000/ERP/CRM/Customer/Read/Rows`,
+      url: `http://211.149.163.211:4000/ERP/CRM/Customer/Read/Rows`,
       method: "POST",
       header: {
         "content-type": "application/x-www-form-urlencoded",
@@ -275,10 +275,10 @@ export default class newtask extends wepy.page {
           ...this.calendarinfo
         }
       };
-      console.log("param", param);
+     // console.log("param", param);
 
       wx.request({
-        url: `http://localhost:5000/ERP/BPM/task/Create?${stringify(param, {
+        url: `http://211.149.163.211:4000/ERP/BPM/task/Create?${stringify(param, {
           allowDots: true
         })}`,
         method: "POST",
@@ -326,7 +326,7 @@ export default class newtask extends wepy.page {
           this.calendarinfo.dockingMobile = e.detail;
           break;
       }
-      console.log("this.calendarinfo", this.calendarinfo);
+   //   console.log("this.calendarinfo", this.calendarinfo);
     },
     onsiteChange(e) {
       let siteinfo = this.sitelist[e.detail.index];
@@ -363,7 +363,7 @@ export default class newtask extends wepy.page {
       this.showpkv = true;
     },
     oncsfocus() {
-      console.log(1);
+   //   console.log(1);
       this.showpcs = true;
     },
     opentime() {
